@@ -3,6 +3,7 @@ import AddProject from "../components/AddProject"
 import ProjectList from "../components/ProjectList"
 import ThemeToggle from "../components/ThemeToggle"
 import { useEffect } from "react"
+import RecentComments from "../components/RecentComments"
 import { supabase } from "../lib/supabaseClient"
 import TransactionList from "../components/TransactionList"
 
@@ -66,14 +67,11 @@ export default function Dashboard() {
           <h2 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Letzte 5 Buchungen</h2>
           <TransactionList amount={5} />
         </div>
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
-          <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white">
-            Projektübersicht
-          </h2>
-          <ProjectList refresh={refreshKey} />
+          <div className="grid md:grid-cols-2 gap-4">
+          <RecentComments />
+          <AddProject onProjectAdded={handleProjectAdded} />
         </div>
-        <AddProject onProjectAdded={handleProjectAdded} />
-
+        
       </div>
     </div>
   )

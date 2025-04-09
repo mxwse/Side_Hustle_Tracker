@@ -2,6 +2,8 @@ import { useParams } from "react-router-dom"
 import { useEffect, useState } from "react"
 import { supabase } from "../lib/supabaseClient"
 import ThemeToggle from "../components/ThemeToggle"
+import AddComment from "../components/AddComment"
+import CommentList from "../components/CommentList"
 import {
   ResponsiveContainer,
   LineChart,
@@ -78,12 +80,19 @@ export default function ProjectDetail() {
       setRefresh((prev) => prev + 1)
     }
   }
+  const [commentsRefreshKey, setCommentsRefreshKey] = useState(0)
 
+  const handleCommentAdded = () => {
+    setCommentsRefreshKey((prev) => prev + 1)
+  }
   const income = entries.filter(e => e.type === "income").reduce((sum, e) => sum + e.amount, 0)
   const expense = entries.filter(e => e.type === "expense").reduce((sum, e) => sum + e.amount, 0)
   const profit = income - expense
 
   if (!project) return <p className="p-6 text-gray-800 dark:text-gray-200">⏳ Lade Projekt...</p>
+
+  
+
 
   return (
     <div className="min-h-screen bg-gray-100 text-gray-900 dark:bg-gray-900 dark:text-gray-100 transition-colors duration-300">
@@ -197,7 +206,8 @@ export default function ProjectDetail() {
             </LineChart>
           </ResponsiveContainer>
         </div>
-
+        <AddComment projectId={project.id} onCommentAdded={handleCommentAdded} />
+        <CommentList projectId={project.id} refreshKey={commentsRefreshKey} />
       </div>
     </div>
   )

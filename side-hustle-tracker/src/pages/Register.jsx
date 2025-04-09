@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { supabase } from "../lib/supabaseClient"
+import ThemeToggle from "../components/ThemeToggle"
 
 export default function Register() {
   const [email, setEmail] = useState("")
@@ -26,6 +27,7 @@ export default function Register() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 px-4">
+      <ThemeToggle />
       <div className="w-full max-w-md bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg">
         <h1 className="text-2xl font-bold mb-6 text-center">📝 Registrieren</h1>
 
@@ -62,6 +64,12 @@ export default function Register() {
           >
             Registrieren
           </button>
+          <p className="text-sm mt-4 text-center">
+            Haben Sie bereits ein Konto?{" "}
+            <a href="/login" className="text-blue-600 hover:underline">
+              Hier Anmelden
+            </a>
+          </p>
         </form>
       </div>
     </div>
