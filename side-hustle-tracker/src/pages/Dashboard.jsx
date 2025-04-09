@@ -71,7 +71,7 @@ export default function Dashboard() {
           <RecentComments />
           <AddProject onProjectAdded={handleProjectAdded} />
         </div>
-        
+        <ProjectList refresh={refreshKey} />
       </div>
     </div>
   )

@@ -33,7 +33,7 @@ export default function AddProject({ onProjectAdded }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white dark:bg-gray-800 p-4 rounded shadow w-full max-w-md">
+    <form onSubmit={handleSubmit} className="bg-white dark:bg-gray-800 p-4 rounded shadow w-full max-w-md space-y-4">
       <h2 className="text-xl font-bold mb-4 text-gray-900 dark:text-white">➕ Neues Projekt anlegen</h2>
       <input
         type="text"
