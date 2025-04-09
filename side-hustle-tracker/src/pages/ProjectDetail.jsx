@@ -1,0 +1,204 @@
+import { useParams } from "react-router-dom"
+import { useEffect, useState } from "react"
+import { supabase } from "../lib/supabaseClient"
+import ThemeToggle from "../components/ThemeToggle"
+import {
+  ResponsiveContainer,
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  Tooltip,
+  CartesianGrid,
+} from 'recharts'
+
+export default function ProjectDetail() {
+  const { id } = useParams()
+  const [project, setProject] = useState(null)
+  const [entries, setEntries] = useState([])
+  const [type, setType] = useState("income")
+  const [amount, setAmount] = useState("")
+  const [desc, setDesc] = useState("")
+  const [refresh, setRefresh] = useState(0)
+
+  // Gruppiere Einträge nach Datum & berechne Gewinn pro Tag
+  const profitByDate = {}
+
+  entries.forEach((entry) => {
+    const date = entry.date
+    if (!profitByDate[date]) profitByDate[date] = 0
+    profitByDate[date] += entry.type === "income" ? entry.amount : -entry.amount
+  })
+
+  // In Array umwandeln für Recharts
+  const profitChartData = Object.entries(profitByDate).map(([date, value]) => ({
+    date,
+    profit: Number(value.toFixed(2)),
+  }))
+
+
+  useEffect(() => {
+    const fetchProject = async () => {
+      const { data } = await supabase.from("projects").select("*").eq("id", id).single()
+      setProject(data)
+    }
+    fetchProject()
+  }, [id])
+
+  useEffect(() => {
+    const fetchEntries = async () => {
+      const user = (await supabase.auth.getUser()).data.user
+      const { data } = await supabase
+        .from("entries")
+        .select("*")
+        .eq("project_id", id)
+        .eq("user_id", user.id)
+        .order("date", { ascending: false })
+
+      setEntries(data)
+    }
+    fetchEntries()
+  }, [id, refresh])
+
+  const handleAddEntry = async (e) => {
+    e.preventDefault()
+    const user = (await supabase.auth.getUser()).data.user
+    const { error } = await supabase.from("entries").insert({
+      user_id: user.id,
+      project_id: id,
+      type,
+      amount: parseFloat(amount),
+      description: desc,
+      date: new Date().toISOString().split("T")[0],
+    })
+
+    if (!error) {
+      setAmount("")
+      setDesc("")
+      setRefresh((prev) => prev + 1)
+    }
+  }
+
+  const income = entries.filter(e => e.type === "income").reduce((sum, e) => sum + e.amount, 0)
+  const expense = entries.filter(e => e.type === "expense").reduce((sum, e) => sum + e.amount, 0)
+  const profit = income - expense
+
+  if (!project) return <p className="p-6 text-gray-800 dark:text-gray-200">⏳ Lade Projekt...</p>
+
+  return (
+    <div className="min-h-screen bg-gray-100 text-gray-900 dark:bg-gray-900 dark:text-gray-100 transition-colors duration-300">
+      <ThemeToggle />
+      <div className="p-6 max-w-4xl mx-auto text-gray-900 dark:text-gray-100">
+        <h1 className="text-2xl font-bold mb-2">{project.name}</h1>
+        <p className="mb-4 text-gray-700 dark:text-gray-300">{project.description}</p>
+
+        {/* Formular */}
+        <form onSubmit={handleAddEntry} className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow mb-6 space-y-4">
+          <h2 className="text-lg font-semibold">➕ Neue Buchung</h2>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <select
+              className="border border-gray-300 dark:border-gray-600 rounded px-3 py-2 bg-white dark:bg-gray-700 dark:text-white"
+              value={type}
+              onChange={e => setType(e.target.value)}
+            >
+              <option value="income">Einnahme</option>
+              <option value="expense">Ausgabe</option>
+            </select>
+            <input
+              type="number"
+              placeholder="Betrag (€)"
+              className="border border-gray-300 dark:border-gray-600 rounded px-3 py-2 bg-white dark:bg-gray-700 dark:text-white"
+              value={amount}
+              onChange={e => setAmount(e.target.value)}
+              required
+            />
+            <input
+              type="text"
+              placeholder="Beschreibung"
+              className="border border-gray-300 dark:border-gray-600 rounded px-3 py-2 bg-white dark:bg-gray-700 dark:text-white"
+              value={desc}
+              onChange={e => setDesc(e.target.value)}
+            />
+            <button
+              type="submit"
+              className="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded transition"
+            >
+              Hinzufügen
+            </button>
+          </div>
+        </form>
+
+        {/* Übersicht */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+          <div className="bg-green-100 dark:bg-green-900 p-4 rounded shadow text-center">
+            <p className="text-green-800 dark:text-green-200 font-bold text-xl">{income.toFixed(2)} €</p>
+            <p className="text-sm text-gray-700 dark:text-gray-300">Einnahmen</p>
+          </div>
+          <div className="bg-red-100 dark:bg-red-900 p-4 rounded shadow text-center">
+            <p className="text-red-800 dark:text-red-200 font-bold text-xl">{expense.toFixed(2)} €</p>
+            <p className="text-sm text-gray-700 dark:text-gray-300">Ausgaben</p>
+          </div>
+          <div className="bg-blue-100 dark:bg-blue-900 p-4 rounded shadow text-center">
+            <p className="text-blue-800 dark:text-blue-200 font-bold text-xl">{profit.toFixed(2)} €</p>
+            <p className="text-sm text-gray-700 dark:text-gray-300">Gewinn</p>
+          </div>
+        </div>
+
+        {/* Tabelle */}
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
+          <h2 className="text-lg font-semibold mb-3">📃 Buchungen</h2>
+          <table className="w-full table-auto border-collapse">
+            <thead className="bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 uppercase text-sm tracking-wide">
+              <tr>
+                <th className="p-2 text-left">Datum</th>
+                <th className="p-2 text-left">Typ</th>
+                <th className="p-2 text-left">Betrag</th>
+                <th className="p-2 text-left">Beschreibung</th>
+              </tr>
+            </thead>
+            <tbody>
+              {entries.map((entry) => (
+                <tr key={entry.id} className="border-t border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                  <td className="p-2">{entry.date}</td>
+                  <td className="p-2">
+                    <span className={`px-2 py-1 rounded text-white text-xs font-semibold ${
+                      entry.type === "income" ? "bg-green-500" : "bg-red-500"
+                    }`}>
+                      {entry.type === "income" ? "Einnahme" : "Ausgabe"}
+                    </span>
+                  </td>
+                  <td className="p-2">{entry.amount.toFixed(2)} €</td>
+                  <td className="p-2">{entry.description || "–"}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow mt-6">
+          <h2 className="text-lg font-semibold mb-4">📈 Gewinnentwicklung</h2>
+          <ResponsiveContainer width="100%" height={300}>
+            <LineChart data={profitChartData}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#ccc" />
+              <XAxis dataKey="date" stroke="#888" />
+              <YAxis stroke="#888" />
+              <Tooltip
+                contentStyle={{ backgroundColor: "#2d3748", border: "none", color: "white" }}
+                labelStyle={{ color: "#fff" }}
+                formatter={(value) => [`${value} €`, "Gewinn"]}
+              />
+              <Line
+                type="monotone"
+                dataKey="profit"
+                stroke="#4ade80"
+                strokeWidth={3}
+                dot={{ r: 3 }}
+                activeDot={{ r: 6 }}
+              />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
+
+      </div>
+    </div>
+  )
+}
