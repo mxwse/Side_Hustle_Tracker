@@ -6,6 +6,7 @@ import Layout from "./components/Layout"
 import ProtectedRoute from "./components/ProtectedRoute"
 import Register from "./pages/Register"
 import ProjectDetail from "./pages/ProjectDetail"
+import Transaction from "./pages/Transactions"
 
 function App() {
   return (
@@ -46,6 +47,16 @@ function App() {
             <ProtectedRoute>
               <Layout>
                 <ProjectDetail />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/transactions"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <Transaction />
               </Layout>
             </ProtectedRoute>
           }

@@ -4,6 +4,7 @@ import ProjectList from "../components/ProjectList"
 import ThemeToggle from "../components/ThemeToggle"
 import { useEffect } from "react"
 import { supabase } from "../lib/supabaseClient"
+import TransactionList from "../components/TransactionList"
 
 export default function Dashboard() {
   const [refreshKey, setRefreshKey] = useState(0)
@@ -63,36 +64,7 @@ export default function Dashboard() {
         </div>
         <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow mt-6">
           <h2 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Letzte 5 Buchungen</h2>
-          <table className="w-full table-auto border-collapse">
-            <thead className="bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 uppercase text-sm tracking-wider">
-              <tr>
-                <th className="p-2 text-left">Datum</th>
-                <th className="p-2 text-left">Typ</th>
-                <th className="p-2 text-left">Betrag</th>
-                <th className="p-2 text-left">Beschreibung</th>
-                <th className="p-2 text-left">Projekt</th>
-              </tr>
-            </thead>
-            <tbody>
-              {entries.slice(0, 5).map((entry) => (
-                <tr key={entry.id} className="border-t border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
-                  <td className="p-2">{entry.date}</td>
-                  <td className="p-2">
-                    <span
-                      className={`px-2 py-1 rounded text-xs font-semibold ${
-                        entry.type === "income" ? "bg-green-500 text-white" : "bg-red-500 text-white"
-                      }`}
-                    >
-                      {entry.type === "income" ? "Einnahme" : "Ausgabe"}
-                    </span>
-                  </td>
-                  <td className="p-2">{entry.amount.toFixed(2)} €</td>
-                  <td className="p-2">{entry.description || "–"}</td>
-                  <td className="p-2">{entry.projects?.name || "–"}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <TransactionList amount={5} />
         </div>
         <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
           <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white">
