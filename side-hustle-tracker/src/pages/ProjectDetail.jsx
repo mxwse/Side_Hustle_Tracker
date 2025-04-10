@@ -4,7 +4,6 @@ import { supabase } from "../lib/supabaseClient"
 import ThemeToggle from "../components/ThemeToggle"
 import AddComment from "../components/AddComment"
 import CommentList from "../components/CommentList"
-import ProjectChat from "../components/ProjectChat"
 
 import {
   ResponsiveContainer,
@@ -83,8 +82,6 @@ export default function ProjectDetail() {
     }
   }
   const [commentsRefreshKey, setCommentsRefreshKey] = useState(0)
-
-  const [showChat, setShowChat] = useState(false)
 
   const handleCommentAdded = () => {
     setCommentsRefreshKey((prev) => prev + 1)
@@ -188,12 +185,6 @@ export default function ProjectDetail() {
           </table>
         </div>
         <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow mt-6">
-        <button
-  className="md:hidden fixed bottom-6 left-6 bg-blue-600 text-white px-4 py-2 rounded shadow z-50"
-  onClick={() => setShowChat(!showChat)}
->
-  {showChat ? "Chat schließen" : "Chat öffnen"}
-</button>
           <h2 className="text-lg font-semibold mb-4">📈 Gewinnentwicklung</h2>
           <ResponsiveContainer width="100%" height={300}>
             <LineChart data={profitChartData}>
