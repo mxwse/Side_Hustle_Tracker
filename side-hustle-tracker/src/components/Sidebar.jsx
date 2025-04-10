@@ -71,6 +71,19 @@ export default function Sidebar() {
             >
               Transaktionen
             </NavLink>
+            <NavLink
+              to="/Teams"
+              className={({ isActive }) =>
+                `block px-4 py-2 rounded transition-colors ${
+                  isActive
+                    ? "bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white"
+                    : "hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300"
+                }`
+              }
+              onClick={() => setOpen(false)}
+            >
+              Team
+            </NavLink>
             <hr className="my-4 border-gray-300 dark:border-gray-600" />
             <button
             onClick={handleLogout}

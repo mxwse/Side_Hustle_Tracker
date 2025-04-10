@@ -7,6 +7,8 @@ import ProtectedRoute from "./components/ProtectedRoute"
 import Register from "./pages/Register"
 import ProjectDetail from "./pages/ProjectDetail"
 import Transaction from "./pages/Transactions"
+import TeamsPage from "./pages/TeamsPage"
+import TeamDetail from "./pages/TeamDetail"
 
 function App() {
   return (
@@ -57,6 +59,26 @@ function App() {
             <ProtectedRoute>
               <Layout>
                 <Transaction />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/teams"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <TeamsPage />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/teams/:id"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <TeamDetail />
               </Layout>
             </ProtectedRoute>
           }

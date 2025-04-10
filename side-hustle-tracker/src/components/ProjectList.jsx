@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { supabase } from "../lib/supabaseClient"
 import AddProject from "./AddProject"
@@ -9,27 +9,21 @@ export default function ProjectList({ refresh, addProject }) {
   const navigate = useNavigate()
 
   const fetchProjects = async () => {
-    setLoading(true)
-    const user = (await supabase.auth.getUser()).data.user
-
+    setLoading(true);
+  
     const { data, error } = await supabase
       .from("projects")
       .select("*")
-      .eq("user_id", user.id)
-      .order("created_at", { ascending: false })
-
+      .order("created_at", { ascending: false });
+  
     if (error) {
-      console.error("Fehler beim Laden der Projekte:", error)
+      console.error("Fehler beim Laden der Projekte:", error);
     } else {
-      setProjects(data)
+      setProjects(data);
     }
-
-    setLoading(false)
-  }
-
-  useEffect(() => {
-    fetchProjects()
-  }, [refresh])
+  
+    setLoading(false);
+  };[refresh]
 
   if (loading) return <p className="mt-4">⏳ Lade Projekte...</p>
   if (projects.length === 0) return <p className="mt-4 text-gray-600 dark:text-gray-400">Noch keine Projekte vorhanden.</p>

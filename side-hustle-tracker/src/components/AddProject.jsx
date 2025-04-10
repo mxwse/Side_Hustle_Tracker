@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { supabase } from "../lib/supabaseClient"
 
 export default function AddProject({ onProjectAdded }) {
@@ -6,7 +6,9 @@ export default function AddProject({ onProjectAdded }) {
   const [description, setDescription] = useState("")
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
-
+  const [teams, setTeams] = useState([]);
+  const [selectedTeamId, setSelectedTeamId] = useState("");
+  
   const handleSubmit = async (e) => {
     e.preventDefault()
     setLoading(true)
@@ -18,6 +20,7 @@ export default function AddProject({ onProjectAdded }) {
       name,
       description,
       user_id: user.id,
+      team_id: selectedTeamId,
     })
 
     if (error) {
@@ -31,6 +34,17 @@ export default function AddProject({ onProjectAdded }) {
 
     setLoading(false)
   }
+  useEffect(() => {
+    const fetchTeams = async () => {
+      const user = (await supabase.auth.getUser()).data.user;
+      const { data } = await supabase
+        .from("team_members")
+        .select("teams(id, name)")
+        .eq("user_id", user.id);
+      setTeams(data.map((entry) => entry.teams));
+    };
+    fetchTeams();
+  }, []);
 
   return (
     <form onSubmit={handleSubmit} className="bg-white dark:bg-gray-800 p-4 rounded shadow w-full max-w-md space-y-4">
@@ -49,6 +63,18 @@ export default function AddProject({ onProjectAdded }) {
         value={description}
         onChange={(e) => setDescription(e.target.value)}
       />
+      <select
+        value={selectedTeamId}
+        onChange={(e) => setSelectedTeamId(e.target.value)}
+      >
+        <option value="">Wähle ein Team</option>
+        {teams.map((team) => (
+          <option key={team.id} value={team.id}>
+            {team.name}
+          </option>
+        ))}
+      </select>
+
       <button
         type="submit"
         className="bg-green-600 text-white px-4 py-2 rounded"
