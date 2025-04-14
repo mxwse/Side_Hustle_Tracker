@@ -50,12 +50,10 @@ export default function ProjectDetail() {
 
   useEffect(() => {
     const fetchEntries = async () => {
-      const user = (await supabase.auth.getUser()).data.user
       const { data } = await supabase
         .from("entries")
         .select("*")
         .eq("project_id", id)
-        .eq("user_id", user.id)
         .order("date", { ascending: false })
 
       setEntries(data)

@@ -11,12 +11,10 @@ export default function TransactionList({ amount }) {
 
     useEffect(() => {
         const fetchAllEntries = async () => {
-        const user = (await supabase.auth.getUser()).data.user
 
         const { data, error } = await supabase
             .from("entries")
             .select("*, projects(name)")
-            .eq("user_id", user.id)
             .order("date", { ascending: false })
 
         if (!error) {
