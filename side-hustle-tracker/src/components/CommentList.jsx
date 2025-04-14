@@ -8,7 +8,7 @@ export default function CommentList({ projectId, refreshKey }) {
     const fetchComments = async () => {
       const { data, error } = await supabase
         .from("comments")
-        .select("*")
+        .select("*, profiles(username, email)")
         .eq("project_id", projectId)
         .order("timestamp", { ascending: false })
 
@@ -31,7 +31,7 @@ export default function CommentList({ projectId, refreshKey }) {
             <li key={c.id} className="border-t border-gray-200 dark:border-gray-700 pt-2">
               <p className="text-sm text-gray-800 dark:text-gray-100 whitespace-pre-line">{c.comment}</p>
               <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                {c.creator} · {new Date(c.timestamp).toLocaleString()}
+              {c.profiles?.username || c.profiles?.email || "Unbekannt"} · {new Date(c.timestamp).toLocaleString()}
               </div>
             </li>
           ))}

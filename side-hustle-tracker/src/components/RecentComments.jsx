@@ -11,7 +11,7 @@ export default function RecentComments() {
 
       const { data, error } = await supabase
         .from("comments")
-        .select("*, projects(name)")
+        .select("*, projects(name), profiles(username, email)")
         .order("timestamp", { ascending: false })
         .limit(10)
 
@@ -48,7 +48,7 @@ export default function RecentComments() {
               </div>
               <div className="flex justify-between">
                 <p className="text-gray-700 dark:text-gray-200 whitespace-pre-line">{c.comment}</p>
-                <span className="text-gray-500 dark:text-gray-400 text-xs"> von {c.creator || "Unbekannt"}</span>
+                <span className="text-gray-500 dark:text-gray-400 text-xs"> von {c.profiles?.username || c.profiles?.email || "Unbekannt"}</span>
               </div>
             </li>
           ))}
