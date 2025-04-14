@@ -8,12 +8,10 @@ export default function RecentComments() {
 
   useEffect(() => {
     const fetchComments = async () => {
-      const user = (await supabase.auth.getUser()).data.user
 
       const { data, error } = await supabase
         .from("comments")
         .select("*, projects(name)")
-        .eq("creator", user.email)
         .order("timestamp", { ascending: false })
         .limit(10)
 
@@ -48,7 +46,10 @@ export default function RecentComments() {
                   {new Date(c.timestamp).toLocaleString()}
                 </span>
               </div>
-              <p className="text-gray-700 dark:text-gray-200 whitespace-pre-line">{c.comment}</p>
+              <div className="flex justify-between">
+                <p className="text-gray-700 dark:text-gray-200 whitespace-pre-line">{c.comment}</p>
+                <span className="text-gray-500 dark:text-gray-400 text-xs"> von {c.creator || "Unbekannt"}</span>
+              </div>
             </li>
           ))}
         </ul>
