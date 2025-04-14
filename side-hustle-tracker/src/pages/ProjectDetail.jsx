@@ -154,7 +154,7 @@ export default function ProjectDetail() {
           </div>
         </div>
         <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow mb-6">
-        <TransactionList/>
+        <TransactionList limit={5} scrollable={true} />
         </div>
         <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow mt-6">
           <h2 className="text-lg font-semibold mb-4">📈 Gewinnentwicklung</h2>

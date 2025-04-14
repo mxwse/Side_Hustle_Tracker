@@ -8,6 +8,7 @@ import { supabase } from "../lib/supabaseClient"
 export default function Sidebar() {
   const [open, setOpen] = useState(false)
   const navigate = useNavigate()
+  const [teamOpen, setTeamOpen] = useState(false);
 
   const handleLogout = async () => {
     await supabase.auth.signOut()
@@ -71,19 +72,59 @@ export default function Sidebar() {
             >
               Transaktionen
             </NavLink>
-            <NavLink
-              to="/Teams"
-              className={({ isActive }) =>
-                `block px-4 py-2 rounded transition-colors ${
-                  isActive
-                    ? "bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white"
-                    : "hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300"
-                }`
-              }
-              onClick={() => setOpen(false)}
-            >
-              Team
-            </NavLink>
+            {/* Team Dropdown */}
+            <div>
+              <button
+                onClick={() => setTeamOpen((prev) => !prev)}
+                className="w-full text-left px-4 py-2 rounded transition-colors flex justify-between items-center hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300"
+              >
+                <span>Team</span>
+                <span>{teamOpen ? "▲" : "▼"}</span>
+              </button>
+              {teamOpen && (
+                <div className="ml-4 mt-1 space-y-1">
+                  <NavLink
+                    to="/Teams"
+                    className={({ isActive }) =>
+                      `block px-4 py-2 rounded text-sm transition-colors ${
+                        isActive
+                          ? "bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white"
+                          : "hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300"
+                      }`
+                    }
+                    onClick={() => setOpen(false)}
+                  >
+                    Meine Teams
+                  </NavLink>
+                  <NavLink
+                    to="/teams/new"
+                    className={({ isActive }) =>
+                      `block px-4 py-2 rounded text-sm transition-colors ${
+                        isActive
+                          ? "bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white"
+                          : "hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300"
+                      }`
+                    }
+                    onClick={() => setOpen(false)}
+                  >
+                    Chat
+                  </NavLink>
+                  <NavLink
+                    to="/teams/new"
+                    className={({ isActive }) =>
+                      `block px-4 py-2 rounded text-sm transition-colors ${
+                        isActive
+                          ? "bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white"
+                          : "hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300"
+                      }`
+                    }
+                    onClick={() => setOpen(false)}
+                  >
+                    Team erstellen
+                  </NavLink>
+                </div>
+              )}
+            </div>
             <NavLink
               to="/ProfilePage"
               className={({ isActive }) =>

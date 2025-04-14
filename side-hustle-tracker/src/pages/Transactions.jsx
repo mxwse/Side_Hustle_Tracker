@@ -8,7 +8,7 @@ export default function Transaction() {
             <ThemeToggle />
               <h1 className="text-2xl font-bold mb-6">📁 Alle Transaktionen</h1>
               <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
-                <TransactionList amount={100} />
+              <TransactionList limit={500} scrollable={false} />
               </div>
             </div>
     )
