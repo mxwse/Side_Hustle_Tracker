@@ -54,7 +54,7 @@ export default function ProjectDetail() {
         .from("entries")
         .select("*")
         .eq("project_id", id)
-        .order("date", { ascending: false })
+        .order("created_at", { ascending: false })
 
       setEntries(data)
     }
@@ -71,6 +71,7 @@ export default function ProjectDetail() {
       amount: parseFloat(amount),
       description: desc,
       date: new Date().toISOString().split("T")[0],
+      creator: user.email,
     })
 
     if (!error) {
@@ -162,6 +163,7 @@ export default function ProjectDetail() {
                 <th className="p-2 text-left">Typ</th>
                 <th className="p-2 text-left">Betrag</th>
                 <th className="p-2 text-left">Beschreibung</th>
+                <th className="p-2 text-left">Ersteller</th>
               </tr>
             </thead>
             <tbody>
@@ -177,6 +179,7 @@ export default function ProjectDetail() {
                   </td>
                   <td className="p-2">{entry.amount.toFixed(2)} €</td>
                   <td className="p-2">{entry.description || "–"}</td>
+                  <td className="p-2">{entry.creator || "–"}</td>
                 </tr>
               ))}
             </tbody>

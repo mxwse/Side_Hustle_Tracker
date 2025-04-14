@@ -9,6 +9,7 @@ import ProjectDetail from "./pages/ProjectDetail"
 import Transaction from "./pages/Transactions"
 import TeamsPage from "./pages/TeamsPage"
 import TeamDetail from "./pages/TeamDetail"
+import ProfilePage from "./pages/ProfilePage"
 
 function App() {
   return (
@@ -79,6 +80,16 @@ function App() {
             <ProtectedRoute>
               <Layout>
                 <TeamDetail />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/profilepage"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <ProfilePage />
               </Layout>
             </ProtectedRoute>
           }

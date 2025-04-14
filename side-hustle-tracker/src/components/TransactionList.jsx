@@ -8,14 +8,19 @@ export default function TransactionList({ amount }) {
     const [refreshKey] = useState(0)
     const [entries, setEntries] = useState([])
     const navigate = useNavigate()
+    const sortedEntries = [...(entries || [])].sort(
+      (a, b) => new Date(b.date) - new Date(a.date)
+    );
+
 
     useEffect(() => {
+        
         const fetchAllEntries = async () => {
 
         const { data, error } = await supabase
             .from("entries")
             .select("*, projects(name)")
-            .order("date", { ascending: false })
+            .order("created_at", { ascending: false })
 
         if (!error) {
             setEntries(data)
@@ -34,10 +39,11 @@ export default function TransactionList({ amount }) {
             <th className="p-2 text-left">Betrag</th>
             <th className="p-2 text-left">Beschreibung</th>
             <th className="p-2 text-left">Projekt</th>
+            <th className="p-2 text-left">Ersteller</th>
           </tr>
         </thead>
         <tbody>
-          {entries.slice(0, amount).map((entry) => (
+          {sortedEntries.slice(0, amount).map((entry) => (
             <tr key={entry.id} onClick={() => navigate(`/project/${entry.project_id}`)} className="border-t border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
               <td className="p-2">{entry.date}</td>
               <td className="p-2">
@@ -52,6 +58,7 @@ export default function TransactionList({ amount }) {
               <td className="p-2">{entry.amount.toFixed(2)} €</td>
               <td className="p-2">{entry.description || "–"}</td>
               <td className="p-2">{entry.projects?.name || "–"}</td>
+              <td className="p-2">{entry.creator || "–"}</td>
             </tr>
           ))}
         </tbody>
