@@ -10,6 +10,9 @@ import Transaction from "./pages/Transactions"
 import TeamsPage from "./pages/TeamsPage"
 import TeamDetail from "./pages/TeamDetail"
 import ProfilePage from "./pages/ProfilePage"
+import TeamCreate from "./pages/TeamCreate"
+import Chats from "./pages/Chats"
+import ChatDetail from "./pages/ChatDetails"
 
 function App() {
   return (
@@ -85,6 +88,26 @@ function App() {
           }
         />
         <Route
+          path="/teams/create"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <TeamCreate />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/teams/chat"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <Chats />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
           path="/profilepage"
           element={
             <ProtectedRoute>
@@ -94,6 +117,16 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route 
+        path="/chats/:chatId"
+        element={
+          <ProtectedRoute>
+          <Layout>
+            <ChatDetail />
+          </Layout>
+        </ProtectedRoute>
+        }
+      />
       </Routes>
     </Router>
   )

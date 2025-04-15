@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react"
 import { supabase } from "../lib/supabaseClient"
 import { useNavigate } from "react-router-dom"
-import CreateTeam from "../components/CreateTeam"
 import ThemeToggle from "../components/ThemeToggle"
 
 export default function TeamsPage() {
@@ -31,8 +30,6 @@ export default function TeamsPage() {
     <div className="max-w-4xl mx-auto p-6 text-gray-900 dark:text-gray-100">
         <ThemeToggle />
       <h1 className="text-2xl font-bold mb-6">👥 Meine Teams</h1>
-
-      <CreateTeam onTeamCreated={fetchTeams} />
 
       <div className="mt-8">
         <h2 className="text-lg font-semibold mb-3">Aktive Teams</h2>

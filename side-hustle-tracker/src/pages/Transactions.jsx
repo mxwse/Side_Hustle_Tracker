@@ -1,5 +1,5 @@
 import ThemeToggle from "../components/ThemeToggle"
-import TransactionList from "../components/TransactionList"
+import TransactionListAllProjects from "../components/TransactionListAllProjects"
 
 export default function Transaction() {
 
@@ -8,7 +8,7 @@ export default function Transaction() {
             <ThemeToggle />
               <h1 className="text-2xl font-bold mb-6">📁 Alle Transaktionen</h1>
               <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
-              <TransactionList limit={500} scrollable={false} />
+              <TransactionListAllProjects limit={500} scrollable={false} />
               </div>
             </div>
     )

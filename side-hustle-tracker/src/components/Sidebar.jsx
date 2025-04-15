@@ -97,7 +97,7 @@ export default function Sidebar() {
                     Meine Teams
                   </NavLink>
                   <NavLink
-                    to="/teams"
+                    to="/teams/chat"
                     className={({ isActive }) =>
                       `block px-4 py-2 rounded text-sm transition-colors ${
                         isActive
@@ -110,7 +110,7 @@ export default function Sidebar() {
                     Chat
                   </NavLink>
                   <NavLink
-                    to="/teams"
+                    to="/teams/create"
                     className={({ isActive }) =>
                       `block px-4 py-2 rounded text-sm transition-colors ${
                         isActive
