@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../lib/supabaseClient";
 
-export default function TransactionList({ limit = 5, scrollable = true, project, multipleProjects = false}) {
+export default function TransactionListAllProjects({ limit = 5, scrollable = true}) {
   const [entries, setEntries] = useState([]);
   const navigate = useNavigate();
 
@@ -10,8 +10,7 @@ export default function TransactionList({ limit = 5, scrollable = true, project,
     const fetchEntries = async () => {
       const { data, error } = await supabase
         .from("entries")
-        .select("*, projects(name, id), profiles(username, email)")
-        .eq("project_id", project) // Filtere nach dem aktuellen Projekt
+        .select("*, projects(name), profiles(username, email)")
         .order("created_at", { ascending: false })
         .limit(100); // maximale Datenmenge aus Supabase
       if (!error) {
@@ -19,7 +18,7 @@ export default function TransactionList({ limit = 5, scrollable = true, project,
       }
     };
     fetchEntries();
-  }, [project]);
+  }, []);
 
   return (
     <div className="overflow-y-auto w-full">

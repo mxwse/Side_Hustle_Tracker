@@ -5,7 +5,7 @@ import ThemeToggle from "../components/ThemeToggle"
 import { useEffect } from "react"
 import RecentComments from "../components/RecentComments"
 import { supabase } from "../lib/supabaseClient"
-import TransactionList from "../components/TransactionList"
+import TransactionListAllProjects from "../components/TransactionListAllProjects"
 
 export default function Dashboard() {
   const [refreshKey, setRefreshKey] = useState(0)
@@ -63,7 +63,7 @@ export default function Dashboard() {
         </div>
         <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow mt-6">
           <h2 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Letzte 5 Buchungen</h2>
-          <TransactionList limit={5} scrollable={true} />
+          <TransactionListAllProjects limit={5} scrollable={true}/>
         </div>
           <div className="grid md:grid-cols-2 gap-4">
           <RecentComments />
