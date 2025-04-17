@@ -40,12 +40,17 @@ export default function CreateChat({ onCreated }) {
       .from("chats")
       .insert({
         name: chatName,
-        team_id: selectedTeamId || null,
+        team_id: selectedTeamId,
         created_by: user.id,
       })
       .select()
       .single();
 
+      if (!selectedTeamId) {
+        setError("Bitte wähle ein Team aus.");
+        setLoading(false);
+        return;
+      }
     if (insertError) {
       setError("Fehler beim Erstellen: " + insertError.message);
       setLoading(false);

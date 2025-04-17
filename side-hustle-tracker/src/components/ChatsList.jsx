@@ -17,8 +17,15 @@ export default function ChatsList() {
 
       if (!error) {
         const allChats = data
-          .flatMap((member) => member.teams?.chats || [])
-          .filter((chat, index, self) => index === self.findIndex(c => c.id === chat.id)); // duplikate entfernen
+        .flatMap((member) =>
+          (member.teams?.chats || []).map((chat) => ({
+            ...chat,
+            team_name: member.teams?.name || "Unbekanntes Team"
+          }))
+        )
+        .filter(
+          (chat, index, self) => index === self.findIndex((c) => c.id === chat.id)
+        );
 
         setChats(allChats);
       }
@@ -33,9 +40,11 @@ export default function ChatsList() {
         <div
           key={chat.id}
           onClick={() => navigate(`/chats/${chat.id}`)}
-          className="cursor-pointer p-4 bg-white dark:bg-gray-800 rounded shadow hover:bg-gray-50 dark:hover:bg-gray-700 transition"
-        >
-          <h2 className="text-lg font-semibold">{chat.name} + {chat.teams?.name}</h2>
+          className="cursor-pointer p-4 bg-white dark:bg-gray-800 rounded shadow hover:bg-gray-50 dark:hover:bg-gray-700 transition">
+          <h2 className="text-lg font-semibold">{chat.name}</h2>
+          <p className="text-sm text-gray-500 dark:text-gray-400">
+            Team: {chat.team_name || "–"}
+          </p>
         </div>
       ))}
 

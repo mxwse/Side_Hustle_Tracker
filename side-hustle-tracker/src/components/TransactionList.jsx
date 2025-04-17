@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../lib/supabaseClient";
 
-export default function TransactionList({ limit = 5, scrollable = true, project, multipleProjects = false}) {
+export default function TransactionList({ limit = 5, scrollable = true, project}) {
   const [entries, setEntries] = useState([]);
   const navigate = useNavigate();
 

@@ -8,37 +8,56 @@ export default function ChatDetail() {
   const [messageInput, setMessageInput] = useState("");
   const [user, setUser] = useState(null);
   const bottomRef = useRef(null);
+  const [chatName, setChatName] = useState("");
 
+  // Nutzer laden
   useEffect(() => {
     const fetchUser = async () => {
       const { data: { user } } = await supabase.auth.getUser();
-      console.log("👤 Aktueller Nutzer:", user);
       setUser(user);
     };
 
-    const fetchMessages = async () => {
-        console.log("📡 Starte Fetch für Chat:", chatId, "Typ:", typeof chatId)
-      
-        const { data, error } = await supabase
-          .from("messages")
-          .select("*, profiles:fk_user_profile(username)")
-          .eq("chat_id", parseInt(chatId)) // ← Cast zu int
-          .order("created_at", { ascending: true })
-      
-        if (error) {
-          console.error("❌ Fehler beim Laden der Nachrichten:", error)
-        } else {
-          console.log("📨 Nachrichten erfolgreich geladen:", data)
-          setMessages(data)
-        }
-      }
-
     fetchUser();
+  }, []);
+
+  useEffect(() => {
+    const fetchChatName = async () => {
+      const { data, error } = await supabase
+        .from("chats")
+        .select("name")
+        .eq("id", parseInt(chatId))
+        .single();
+  
+      if (!error) {
+        setChatName(data.name);
+      } else {
+        console.error("Fehler beim Laden des Chatnamens:", error);
+      }
+    };
+  
+    fetchChatName();
+  }, [chatId]);
+  
+  // Nachrichten laden + Live-Updates
+  useEffect(() => {
+    const fetchMessages = async () => {
+      const { data, error } = await supabase
+        .from("messages")
+        .select("*, profiles:fk_user_profile(username)")
+        .eq("chat_id", parseInt(chatId))
+        .order("created_at", { ascending: true });
+
+      if (!error) {
+        setMessages(data);
+      } else {
+        console.error("Fehler beim Laden:", error);
+      }
+    };
+
     fetchMessages();
 
-    // Realtime
     const channel = supabase
-      .channel("chat-" + chatId)
+      .channel("chat-messages-" + chatId)
       .on(
         "postgres_changes",
         {
@@ -48,7 +67,6 @@ export default function ChatDetail() {
           filter: `chat_id=eq.${chatId}`,
         },
         (payload) => {
-          console.log("📡 Neue Nachricht empfangen:", payload.new);
           setMessages((prev) => [...prev, payload.new]);
         }
       )
@@ -59,10 +77,12 @@ export default function ChatDetail() {
     };
   }, [chatId]);
 
+  // Scrollen bei neuen Nachrichten
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  // Nachricht senden
   const sendMessage = async (e) => {
     e.preventDefault();
     if (!messageInput.trim() || !user) return;
@@ -73,38 +93,38 @@ export default function ChatDetail() {
       content: messageInput.trim(),
     });
 
-    if (error) {
-      console.error("❌ Fehler beim Senden:", error.message);
-    } else {
-      setMessageInput("");
-    }
+    if (!error) setMessageInput("");
   };
 
   return (
     <div className="flex flex-col max-w-4xl mx-auto p-6 min-h-screen">
-      <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">💬 Chat</h2>
+      <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">
+        💬 {chatName || "Chat"}
+      </h2>
 
-      <div className="flex-grow overflow-y-auto bg-gray-50 dark:bg-gray-800 rounded p-4 space-y-4">
-        {messages.length === 0 ? (
-          <p className="text-gray-500 dark:text-gray-400">Keine Nachrichten vorhanden.</p>
-        ) : (
-          messages.map((msg) => (
-            <div
-              key={msg.id}
-              className={`max-w-[75%] p-3 rounded shadow ${
-                msg.user_id === user?.id
-                  ? "bg-blue-600 text-white ml-auto"
-                  : "bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-              }`}
-            >
+      <div
+        className="bg-gray-50 dark:bg-gray-800 rounded p-4 space-y-4 overflow-y-auto"
+        style={{ height: "80vh" }}
+      >
+        {messages.map((msg) => (
+          <div
+            key={msg.id}
+            className={`max-w-[75%] p-3 rounded shadow ${
+              msg.user_id === user?.id
+                ? "bg-blue-600 text-white ml-auto"
+                : "bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+            }`}
+          >
             <p className="text-sm">{msg.content}</p>
             <p className="text-xs text-gray-300 mt-1">
-                {msg.profiles?.username || msg.user_id.slice(0, 6)} ·{" "}
-                {new Date(msg.created_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+              {msg.profiles?.username || msg.user_id.slice(0, 6)} ·{" "}
+              {new Date(msg.created_at).toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit",
+              })}
             </p>
-            </div>
-          ))
-        )}
+          </div>
+        ))}
         <div ref={bottomRef} />
       </div>
 
@@ -117,8 +137,7 @@ export default function ChatDetail() {
         />
         <button
           type="submit"
-          disabled={!messageInput.trim()}
-          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded disabled:opacity-50"
+          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
         >
           Senden
         </button>
