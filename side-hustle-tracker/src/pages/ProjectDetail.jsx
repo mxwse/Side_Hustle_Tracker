@@ -9,6 +9,8 @@ import AddEntry from "../components/AddEntry";
 import ProfitChart from "../components/ProfitChart";
 import IncomeOverview from "../components/IncomeOverview";
 import ProjectDetails from "../components/ProjectDetails";
+import Todos from "../components/ToDoList";
+import ToDoHistory from "../components/ToDoHistory";
 
 export default function ProjectDetail() {
   const { id: projectId } = useParams();
@@ -71,7 +73,9 @@ export default function ProjectDetail() {
       {selectedTab === "overview" && (
         <div>
           <IncomeOverview/>
+          <Todos projectId={projectId} list={false} />
           <ProfitChart />
+          
         </div>
       )}
       {selectedTab === "entries" && (
@@ -90,10 +94,10 @@ export default function ProjectDetail() {
 
       {selectedTab === "notes" && (
         <div>
-          <p className="text-gray-700 dark:text-gray-300">📝 Notizen-Bereich (noch leer)</p>
+          <Todos projectId={projectId} list={true} />
         </div>
       )}
-      
+
       {selectedTab === "details" && (
         <div>
           <ProjectDetails projectId={projectId} />
