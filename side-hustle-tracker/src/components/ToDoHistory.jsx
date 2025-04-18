@@ -14,7 +14,13 @@ export default function ToDoHistory({ todos }) {
             .filter((todo) => todo.done)
             .map((todo) => (
                 <li key={`history-${todo.id}`}>
-                ✅ <strong>{todo.completed_by}</strong> hat „{todo.description}“ am {new Date(todo.completed_at).toLocaleDateString("de-DE")} erledigt.
+                ✅ <strong>{todo.completed_by}</strong> hat „{todo.description}“ am {new Date(todo.created_at).toLocaleDateString("de-DE", {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    year: "numeric",
+                    month: "2-digit",
+                    day: "2-digit",
+                    })} Uhr erledigt.
                 </li>
             ))}
         </ul>

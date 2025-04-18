@@ -64,7 +64,7 @@ export default function Todos({ projectId, list = true}) {
       .from("todos")
       .update({
         done: !todo.done,
-        completed_by: !todo.done ? profile.username : null,
+        completed_by: !todo.done ? profile.username || user.email : null,
         completed_at: !todo.done ? new Date().toISOString() : null,
       })
       .eq("id", todo.id);

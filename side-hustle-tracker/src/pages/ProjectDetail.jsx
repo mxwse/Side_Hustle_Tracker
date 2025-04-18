@@ -10,7 +10,6 @@ import ProfitChart from "../components/ProfitChart";
 import IncomeOverview from "../components/IncomeOverview";
 import ProjectDetails from "../components/ProjectDetails";
 import Todos from "../components/ToDoList";
-import ToDoHistory from "../components/ToDoHistory";
 
 export default function ProjectDetail() {
   const { id: projectId } = useParams();
@@ -72,8 +71,9 @@ export default function ProjectDetail() {
       {/* Tab Content */}
       {selectedTab === "overview" && (
         <div>
-          <IncomeOverview/>
           <Todos projectId={projectId} list={false} />
+          <br />
+          <IncomeOverview/>
           <ProfitChart />
           
         </div>

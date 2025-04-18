@@ -18,7 +18,7 @@ export default function ProjectList({ refresh, addProject }) {
     try {
       const { data, error } = await supabase
         .from("projects")
-        .select("*")
+        .select("*, teams(*)")
         .order("created_at", { ascending: false });
 
       if (error) {
@@ -64,8 +64,9 @@ export default function ProjectList({ refresh, addProject }) {
         <table className="w-full table-auto border-collapse bg-white dark:bg-gray-800 shadow rounded">
           <thead className="bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 uppercase text-sm tracking-wider">
             <tr>
-              <th className="text-left p-3">🗂️ Projektname</th>
-              <th className="text-left p-3">📝 Beschreibung</th>
+              <th className="text-left p-3">Projektname</th>
+              <th className="text-left p-3">Beschreibung</th>
+              <th className="text-left p-3">Team</th>
             </tr>
           </thead>
           <tbody>
@@ -80,6 +81,9 @@ export default function ProjectList({ refresh, addProject }) {
                 </td>
                 <td className="p-3 text-gray-600 dark:text-gray-300">
                   {project.description || "–"}
+                </td>
+                <td className="p-3 text-gray-600 dark:text-gray-300">
+                  {project.teams?.name || "–"}
                 </td>
               </tr>
             ))}
