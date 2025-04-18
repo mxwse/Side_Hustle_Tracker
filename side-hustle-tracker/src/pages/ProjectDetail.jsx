@@ -6,6 +6,8 @@ import TransactionList from "../components/TransactionList";
 import CommentList from "../components/CommentList";
 import AddComment from "../components/AddComment";
 import AddEntry from "../components/AddEntry";
+import ProfitChart from "../components/ProfitChart";
+import IncomeOverview from "../components/IncomeOverview";
 
 export default function ProjectDetail() {
   const { id: projectId } = useParams();
@@ -67,7 +69,8 @@ export default function ProjectDetail() {
       {/* Tab Content */}
       {selectedTab === "overview" && (
         <div>
-          <p className="text-gray-700 dark:text-gray-300">Hier kommt deine Projektübersicht hin – z. B. Charts, Summen, etc.</p>
+          <IncomeOverview/>
+          <ProfitChart />
         </div>
       )}
 
