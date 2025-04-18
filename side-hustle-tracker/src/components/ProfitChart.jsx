@@ -17,7 +17,6 @@ import {
         const { id } = useParams()
         const profitByDate = {}
         const [entries, setEntries] = useState([])
-        const [setProject] = useState(null)
         const [refresh] = useState(0)
 
         entries.forEach((entry) => {
@@ -32,15 +31,6 @@ import {
             profit: Number(value.toFixed(2)),
         }))
         .sort((a, b) => new Date(a.date) - new Date(b.date));
-
-
-        useEffect(() => {
-            const fetchProject = async () => {
-              const { data } = await supabase.from("projects").select("*").eq("id", id).single()
-              setProject(data)
-            }
-            fetchProject()
-          }, [id])
 
         useEffect(() => {
             const fetchEntries = async () => {

@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { supabase } from "../lib/supabaseClient";
+import { useEffect, useState } from "react";
 import ThemeToggle from "../components/ThemeToggle"
 import TransactionList from "../components/TransactionList";
 import CommentList from "../components/CommentList";
@@ -8,6 +8,7 @@ import AddComment from "../components/AddComment";
 import AddEntry from "../components/AddEntry";
 import ProfitChart from "../components/ProfitChart";
 import IncomeOverview from "../components/IncomeOverview";
+import ProjectDetails from "../components/ProjectDetails";
 
 export default function ProjectDetail() {
   const { id: projectId } = useParams();
@@ -15,27 +16,27 @@ export default function ProjectDetail() {
   const [selectedTab, setSelectedTab] = useState("overview");
 
   useEffect(() => {
-    const fetchProject = async () => {
-      const { data, error } = await supabase
-        .from("projects")
-        .select("*")
-        .eq("id", projectId)
-        .single();
-
-      if (!error) {
-        setProject(data);
-      }
-    };
-
-    fetchProject();
-  }, [projectId]);
+              const fetchProject = async () => {
+                const { data, error } = await supabase
+                  .from("projects")
+                  .select("*, profiles(id, username, email)")
+                  .eq("id", projectId)
+                  .single();
+          
+                if (!error) {
+                  setProject(data);
+                }
+              };
+          
+              fetchProject();
+            }, [projectId]);
 
   const tabs = [
     { key: "overview", label: "Übersicht" },
-    { key: "details", label: "Details" },
     { key: "entries", label: "Buchungen" },
     { key: "comments", label: "Kommentare" },
-    { key: "notes", label: "Notizen" },
+    { key: "notes", label: "To Do's" },
+    { key: "details", label: "Details" },
   ];
 
   if (!project) return <p className="p-6">Projekt wird geladen...</p>;
@@ -73,13 +74,6 @@ export default function ProjectDetail() {
           <ProfitChart />
         </div>
       )}
-
-      {selectedTab === "details" && (
-        <div>
-          <p className="text-gray-700 dark:text-gray-300">Projektbeschreibung: {project.description || "Keine Angaben."}</p>
-        </div>
-      )}
-
       {selectedTab === "entries" && (
         <div className="space-y-4">
           <AddEntry />
@@ -97,6 +91,12 @@ export default function ProjectDetail() {
       {selectedTab === "notes" && (
         <div>
           <p className="text-gray-700 dark:text-gray-300">📝 Notizen-Bereich (noch leer)</p>
+        </div>
+      )}
+      
+      {selectedTab === "details" && (
+        <div>
+          <ProjectDetails projectId={projectId} />
         </div>
       )}
     </div>
