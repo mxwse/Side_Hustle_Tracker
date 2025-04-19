@@ -11,7 +11,6 @@ import ProfitChart from "../../components/Transactions/ProfitChart";
 import IncomeOverview from "../../components/Transactions/IncomeOverview";
 import ProjectDetails from "../../components/Project/ProjectDetails";
 import Todos from "../../components/ToDo/ToDoList";
-import InvoiceGenerator from "../../components/Invoice/InvoiceGenerator";
 import InvoiceList from "../../components/Invoice/InvoiceList";
 import InvoiceForm from "../../components/Invoice/InvoiceForm";
 import { generatePDF } from "../../components/Invoice/InvoicePDFGenerator";
@@ -110,7 +109,6 @@ export default function ProjectDetail() {
       )}
       {selectedTab === "invoices" && (
         <div>
-          <InvoiceGenerator projectId={projectId} />
           <InvoiceForm onGenerate={generatePDF} />
           <br />
           <InvoiceList projectId={projectId} />
