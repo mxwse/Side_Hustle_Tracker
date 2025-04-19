@@ -1,0 +1,49 @@
+"filename", "language", "HTML", "JavaScript JSX", "JavaScript", "CSS", "XML", "JSON", "Markdown", "comment", "blank", "total"
+"c:\Users\maxwi\OneDrive\Documents\Projekte\Side_Hustle_Tracker\side-hustle-tracker\README.md", "Markdown", 0, 0, 0, 0, 0, 0, 7, 0, 5, 12
+"c:\Users\maxwi\OneDrive\Documents\Projekte\Side_Hustle_Tracker\side-hustle-tracker\eslint.config.js", "JavaScript", 0, 0, 32, 0, 0, 0, 0, 0, 2, 34
+"c:\Users\maxwi\OneDrive\Documents\Projekte\Side_Hustle_Tracker\side-hustle-tracker\index.html", "HTML", 13, 0, 0, 0, 0, 0, 0, 0, 1, 14
+"c:\Users\maxwi\OneDrive\Documents\Projekte\Side_Hustle_Tracker\side-hustle-tracker\package-lock.json", "JSON", 0, 0, 0, 0, 0, 3914, 0, 0, 1, 3915
+"c:\Users\maxwi\OneDrive\Documents\Projekte\Side_Hustle_Tracker\side-hustle-tracker\package.json", "JSON", 0, 0, 0, 0, 0, 36, 0, 0, 1, 37
+"c:\Users\maxwi\OneDrive\Documents\Projekte\Side_Hustle_Tracker\side-hustle-tracker\postcss.config.js", "JavaScript", 0, 0, 6, 0, 0, 0, 0, 0, 1, 7
+"c:\Users\maxwi\OneDrive\Documents\Projekte\Side_Hustle_Tracker\side-hustle-tracker\public\vite.svg", "XML", 0, 0, 0, 0, 1, 0, 0, 0, 0, 1
+"c:\Users\maxwi\OneDrive\Documents\Projekte\Side_Hustle_Tracker\side-hustle-tracker\src\App.css", "CSS", 0, 0, 0, 37, 0, 0, 0, 0, 7, 44
+"c:\Users\maxwi\OneDrive\Documents\Projekte\Side_Hustle_Tracker\side-hustle-tracker\src\App.jsx", "JavaScript JSX", 0, 130, 0, 0, 0, 0, 0, 0, 6, 136
+"c:\Users\maxwi\OneDrive\Documents\Projekte\Side_Hustle_Tracker\side-hustle-tracker\src\assets\react.svg", "XML", 0, 0, 0, 0, 1, 0, 0, 0, 0, 1
+"c:\Users\maxwi\OneDrive\Documents\Projekte\Side_Hustle_Tracker\side-hustle-tracker\src\components\AddComment.jsx", "JavaScript JSX", 0, 48, 0, 0, 0, 0, 0, 0, 11, 59
+"c:\Users\maxwi\OneDrive\Documents\Projekte\Side_Hustle_Tracker\side-hustle-tracker\src\components\AddEntry.jsx", "JavaScript JSX", 0, 64, 0, 0, 0, 0, 0, 0, 5, 69
+"c:\Users\maxwi\OneDrive\Documents\Projekte\Side_Hustle_Tracker\side-hustle-tracker\src\components\AddProject.jsx", "JavaScript JSX", 0, 81, 0, 0, 0, 0, 0, 0, 9, 90
+"c:\Users\maxwi\OneDrive\Documents\Projekte\Side_Hustle_Tracker\side-hustle-tracker\src\components\ChatsList.jsx", "JavaScript JSX", 0, 48, 0, 0, 0, 0, 0, 0, 9, 57
+"c:\Users\maxwi\OneDrive\Documents\Projekte\Side_Hustle_Tracker\side-hustle-tracker\src\components\CommentList.jsx", "JavaScript JSX", 0, 37, 0, 0, 0, 0, 0, 0, 5, 42
+"c:\Users\maxwi\OneDrive\Documents\Projekte\Side_Hustle_Tracker\side-hustle-tracker\src\components\CreateChat.jsx", "JavaScript JSX", 0, 100, 0, 0, 0, 0, 0, 2, 19, 121
+"c:\Users\maxwi\OneDrive\Documents\Projekte\Side_Hustle_Tracker\side-hustle-tracker\src\components\CreateTeam.jsx", "JavaScript JSX", 0, 67, 0, 0, 0, 0, 0, 2, 13, 82
+"c:\Users\maxwi\OneDrive\Documents\Projekte\Side_Hustle_Tracker\side-hustle-tracker\src\components\IncomeOverview.jsx", "JavaScript JSX", 0, 42, 0, 0, 0, 0, 0, 0, 8, 50
+"c:\Users\maxwi\OneDrive\Documents\Projekte\Side_Hustle_Tracker\side-hustle-tracker\src\components\Layout.jsx", "JavaScript JSX", 0, 9, 0, 0, 0, 0, 0, 0, 2, 11
+"c:\Users\maxwi\OneDrive\Documents\Projekte\Side_Hustle_Tracker\side-hustle-tracker\src\components\ProfitChart.jsx", "JavaScript JSX", 0, 64, 0, 0, 0, 0, 0, 2, 6, 72
+"c:\Users\maxwi\OneDrive\Documents\Projekte\Side_Hustle_Tracker\side-hustle-tracker\src\components\ProjectDetails.jsx", "JavaScript JSX", 0, 55, 0, 0, 0, 0, 0, 0, 7, 62
+"c:\Users\maxwi\OneDrive\Documents\Projekte\Side_Hustle_Tracker\side-hustle-tracker\src\components\ProjectList.jsx", "JavaScript JSX", 0, 84, 0, 0, 0, 0, 0, 0, 12, 96
+"c:\Users\maxwi\OneDrive\Documents\Projekte\Side_Hustle_Tracker\side-hustle-tracker\src\components\ProtectedRoute.jsx", "JavaScript JSX", 0, 21, 0, 0, 0, 0, 0, 0, 8, 29
+"c:\Users\maxwi\OneDrive\Documents\Projekte\Side_Hustle_Tracker\side-hustle-tracker\src\components\RecentComments.jsx", "JavaScript JSX", 0, 52, 0, 0, 0, 0, 0, 0, 8, 60
+"c:\Users\maxwi\OneDrive\Documents\Projekte\Side_Hustle_Tracker\side-hustle-tracker\src\components\Sidebar.jsx", "JavaScript JSX", 0, 148, 0, 0, 0, 0, 0, 3, 4, 155
+"c:\Users\maxwi\OneDrive\Documents\Projekte\Side_Hustle_Tracker\side-hustle-tracker\src\components\ThemeToggle.jsx", "JavaScript JSX", 0, 23, 0, 0, 0, 0, 0, 0, 4, 27
+"c:\Users\maxwi\OneDrive\Documents\Projekte\Side_Hustle_Tracker\side-hustle-tracker\src\components\ToDoHistory.jsx", "JavaScript JSX", 0, 22, 0, 0, 0, 0, 0, 3, 3, 28
+"c:\Users\maxwi\OneDrive\Documents\Projekte\Side_Hustle_Tracker\side-hustle-tracker\src\components\ToDoList.jsx", "JavaScript JSX", 0, 112, 0, 0, 0, 0, 0, 0, 17, 129
+"c:\Users\maxwi\OneDrive\Documents\Projekte\Side_Hustle_Tracker\side-hustle-tracker\src\components\TransactionList.jsx", "JavaScript JSX", 0, 67, 0, 0, 0, 0, 0, 0, 4, 71
+"c:\Users\maxwi\OneDrive\Documents\Projekte\Side_Hustle_Tracker\side-hustle-tracker\src\components\TransactionListAllProjects.jsx", "JavaScript JSX", 0, 66, 0, 0, 0, 0, 0, 0, 4, 70
+"c:\Users\maxwi\OneDrive\Documents\Projekte\Side_Hustle_Tracker\side-hustle-tracker\src\index.css", "CSS", 0, 0, 0, 9, 0, 0, 0, 0, 4, 13
+"c:\Users\maxwi\OneDrive\Documents\Projekte\Side_Hustle_Tracker\side-hustle-tracker\src\lib\supabaseClient.js", "JavaScript", 0, 0, 4, 0, 0, 0, 0, 0, 3, 7
+"c:\Users\maxwi\OneDrive\Documents\Projekte\Side_Hustle_Tracker\side-hustle-tracker\src\main.jsx", "JavaScript JSX", 0, 9, 0, 0, 0, 0, 0, 0, 2, 11
+"c:\Users\maxwi\OneDrive\Documents\Projekte\Side_Hustle_Tracker\side-hustle-tracker\src\pages\ChatDetails.jsx", "JavaScript JSX", 0, 127, 0, 0, 0, 0, 0, 4, 19, 150
+"c:\Users\maxwi\OneDrive\Documents\Projekte\Side_Hustle_Tracker\side-hustle-tracker\src\pages\Chats.jsx", "JavaScript JSX", 0, 14, 0, 0, 0, 0, 0, 0, 5, 19
+"c:\Users\maxwi\OneDrive\Documents\Projekte\Side_Hustle_Tracker\side-hustle-tracker\src\pages\Dashboard.jsx", "JavaScript JSX", 0, 64, 0, 0, 0, 0, 0, 0, 13, 77
+"c:\Users\maxwi\OneDrive\Documents\Projekte\Side_Hustle_Tracker\side-hustle-tracker\src\pages\Login.jsx", "JavaScript JSX", 0, 70, 0, 0, 0, 0, 0, 0, 10, 80
+"c:\Users\maxwi\OneDrive\Documents\Projekte\Side_Hustle_Tracker\side-hustle-tracker\src\pages\ProfilePage.jsx", "JavaScript JSX", 0, 122, 0, 0, 0, 0, 0, 9, 24, 155
+"c:\Users\maxwi\OneDrive\Documents\Projekte\Side_Hustle_Tracker\side-hustle-tracker\src\pages\ProjectDetail.jsx", "JavaScript JSX", 0, 93, 0, 0, 0, 0, 0, 2, 14, 109
+"c:\Users\maxwi\OneDrive\Documents\Projekte\Side_Hustle_Tracker\side-hustle-tracker\src\pages\Projects.jsx", "JavaScript JSX", 0, 13, 0, 0, 0, 0, 0, 0, 3, 16
+"c:\Users\maxwi\OneDrive\Documents\Projekte\Side_Hustle_Tracker\side-hustle-tracker\src\pages\Register.jsx", "JavaScript JSX", 0, 68, 0, 0, 0, 0, 0, 0, 10, 78
+"c:\Users\maxwi\OneDrive\Documents\Projekte\Side_Hustle_Tracker\side-hustle-tracker\src\pages\TeamCreate.jsx", "JavaScript JSX", 0, 31, 0, 0, 0, 0, 0, 0, 6, 37
+"c:\Users\maxwi\OneDrive\Documents\Projekte\Side_Hustle_Tracker\side-hustle-tracker\src\pages\TeamDetail.jsx", "JavaScript JSX", 0, 114, 0, 0, 0, 0, 0, 3, 19, 136
+"c:\Users\maxwi\OneDrive\Documents\Projekte\Side_Hustle_Tracker\side-hustle-tracker\src\pages\TeamsPage.jsx", "JavaScript JSX", 0, 55, 0, 0, 0, 0, 0, 1, 9, 65
+"c:\Users\maxwi\OneDrive\Documents\Projekte\Side_Hustle_Tracker\side-hustle-tracker\src\pages\Transactions.jsx", "JavaScript JSX", 0, 13, 0, 0, 0, 0, 0, 0, 2, 15
+"c:\Users\maxwi\OneDrive\Documents\Projekte\Side_Hustle_Tracker\side-hustle-tracker\tailwind.config.js", "JavaScript", 0, 0, 11, 0, 0, 0, 0, 1, 1, 13
+"c:\Users\maxwi\OneDrive\Documents\Projekte\Side_Hustle_Tracker\side-hustle-tracker\vite.config.js", "JavaScript", 0, 0, 9, 0, 0, 0, 0, 1, 2, 12
+"Total", "-", 13, 2133, 62, 46, 2, 3950, 7, 33, 328, 6574

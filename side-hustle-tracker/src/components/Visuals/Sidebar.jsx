@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom"
 import { Menu, X } from "lucide-react"
 import { LogOut } from "lucide-react"
 import { useNavigate } from "react-router-dom"
-import { supabase } from "../lib/supabaseClient"
+import { supabase } from "../../lib/supabaseClient"
 
 export default function Sidebar() {
   const [open, setOpen] = useState(false)
