@@ -11,6 +11,10 @@ import ProfitChart from "../../components/Transactions/ProfitChart";
 import IncomeOverview from "../../components/Transactions/IncomeOverview";
 import ProjectDetails from "../../components/Project/ProjectDetails";
 import Todos from "../../components/ToDo/ToDoList";
+import InvoiceGenerator from "../../components/Invoice/InvoiceGenerator";
+import InvoiceList from "../../components/Invoice/InvoiceList";
+import InvoiceForm from "../../components/Invoice/InvoiceForm";
+import { generatePDF } from "../../components/Invoice/InvoicePDFGenerator";
 
 export default function ProjectDetail() {
   const { id: projectId } = useParams();
@@ -39,6 +43,7 @@ export default function ProjectDetail() {
     { key: "comments", label: "Kommentare" },
     { key: "notes", label: "To Do's" },
     { key: "details", label: "Details" },
+    { key: "invoices", label: "Rechnungen" },
   ];
 
   if (!project) return <p className="p-6">Projekt wird geladen...</p>;
@@ -101,6 +106,14 @@ export default function ProjectDetail() {
       {selectedTab === "details" && (
         <div>
           <ProjectDetails projectId={projectId} />
+        </div>
+      )}
+      {selectedTab === "invoices" && (
+        <div>
+          <InvoiceGenerator projectId={projectId} />
+          <InvoiceForm onGenerate={generatePDF} />
+          <br />
+          <InvoiceList projectId={projectId} />
         </div>
       )}
     </div>
