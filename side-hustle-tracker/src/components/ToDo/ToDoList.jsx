@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../../lib/supabaseClient";
+import { ChevronDown } from "lucide-react";
+
 import ToDoHistory from "./ToDoHistory";
 
 export default function Todos({ projectId, list = true}) {
@@ -8,6 +10,8 @@ export default function Todos({ projectId, list = true}) {
   const [user, setUser] = useState(null);
   const [profile, setProfile] = useState(null);
   const [dueDate, setDueDate] = useState("");
+  const [openNotes, setOpenNotes] = useState({}); // { [todoId]: boolean }
+  const [noteDrafts, setNoteDrafts] = useState({}); // { [todoId]: string }
 
   useEffect(() => {
     const fetchUserAndTodos = async () => {
@@ -81,6 +85,29 @@ export default function Todos({ projectId, list = true}) {
     }
   };
 
+  function getDueColor(dateString) {
+    const today = new Date();
+    const due = new Date(dateString);
+    const diff = Math.ceil((due - today) / (1000 * 60 * 60 * 24));
+  
+    if (diff < 0) return "bg-red-500";
+    if (diff === 0) return "bg-yellow-500";
+    if (diff <= 3) return "bg-orange-500";
+    return "bg-green-500";
+  }
+  const saveNote = async (id) => {
+    const newNote = noteDrafts[id] ?? "";
+    const { error } = await supabase
+      .from("todos")
+      .update({ note: newNote })
+      .eq("id", id);
+  
+    if (error) {
+      console.error("Fehler beim Speichern der Notiz:", error.message);
+    } else {
+      setOpenNotes((prev) => ({ ...prev, [id]: false }));
+    }
+  };
   return (
     <div className="bg-white dark:bg-gray-800 p-6 rounded shadow">
         <div className={list ? "" : "hidden"}> 
@@ -116,30 +143,70 @@ export default function Todos({ projectId, list = true}) {
           return new Date(a.due_date) - new Date(b.due_date);
         })
         .map((todo) => {
-          const today = new Date();
-          const due = todo.due_date ? new Date(todo.due_date) : null;
-          let badgeColor = "bg-green-500";
-          if (due) {
-            const diffDays = Math.ceil((due - today) / (1000 * 60 * 60 * 24));
-            if (diffDays < 0) badgeColor = "bg-red-500";
-            else if (diffDays === 0) badgeColor = "bg-orange-500";
-            else if (diffDays <= 3) badgeColor = "bg-yellow-500";
-          }
-
           return (
-            <li key={todo.id} className="flex items-center justify-between">
-              <label className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  checked={todo.done}
-                  onChange={() => toggleDone(todo)}
-                />
-                <span className="text-gray-900 dark:text-white">{todo.description}</span>
-              </label>
-              {todo.due_date && (
-                <span className={`text-xs px-2 py-1 rounded text-white ${badgeColor}`}>
-                  Fällig: {todo.due_date}
-                </span>
+            <li
+              key={todo.id}
+              className="bg-gray-50 dark:bg-gray-700 p-3 rounded shadow cursor-pointer"
+              onClick={() =>
+                setOpenNotes((prev) => ({
+                  ...prev,
+                  [todo.id]: !prev[todo.id],
+                }))
+              }
+            >
+              <div className="flex items-center justify-between">
+                <label className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    checked={todo.done}
+                    onChange={(e) => {
+                      e.stopPropagation();
+                      toggleDone(todo);
+                    }}
+                    onClick={(e) => e.stopPropagation()}
+                  />
+                  <span className="text-gray-900 dark:text-white">{todo.description}</span>
+                </label>
+                <div className="flex items-center gap-3">
+                  {todo.due_date && (
+                    <span
+                      className={`text-xs px-2 py-1 rounded text-white ${getDueColor(
+                        todo.due_date
+                      )}`}
+                    >
+                      Fällig: {todo.due_date}
+                    </span>
+                  )}
+
+                  {/* 🔽 Chevron Icon */}
+                  <ChevronDown
+                    className={`w-4 h-4 transition-transform duration-200 ${
+                      openNotes[todo.id] ? "rotate-180" : ""
+                    } text-gray-500 dark:text-gray-300`}
+                  />
+                </div>
+              </div>
+
+              {openNotes[todo.id] && (
+                <div className="mt-3 space-y-2" onClick={(e) => e.stopPropagation()}>
+                  <textarea
+                    rows={3}
+                    className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                    value={noteDrafts[todo.id] ?? todo.note ?? ""}
+                    onChange={(e) =>
+                      setNoteDrafts((prev) => ({
+                        ...prev,
+                        [todo.id]: e.target.value,
+                      }))
+                    }
+                  />
+                  <button
+                    className="text-sm bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded"
+                    onClick={() => saveNote(todo.id)}
+                  >
+                    Speichern
+                  </button>
+                </div>
               )}
             </li>
           );
