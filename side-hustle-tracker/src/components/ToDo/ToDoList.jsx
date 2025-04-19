@@ -4,7 +4,7 @@ import { ChevronDown } from "lucide-react";
 
 import ToDoHistory from "./ToDoHistory";
 
-export default function Todos({ projectId, list = true}) {
+export default function Todos({ projectId, active = true, create = true }) {
   const [todos, setTodos] = useState([]);
   const [newTask, setNewTask] = useState("");
   const [user, setUser] = useState(null);
@@ -110,7 +110,7 @@ export default function Todos({ projectId, list = true}) {
   };
   return (
     <div className="bg-white dark:bg-gray-800 p-6 rounded shadow">
-        <div className={list ? "" : "hidden"}> 
+        <div className={create ? "" : "hidden"}> 
             <h2 className="text-lg font-semibold text-gray-800 dark:text-white mb-4">
                 ✅ To Do Liste
             </h2>
@@ -132,8 +132,8 @@ export default function Todos({ projectId, list = true}) {
                 Hinzufügen
               </button>
             </form>
-        
-      <ul className="space-y-2">
+        </div>
+      <ul className={active ? "space-y-2" : "hidden"}>
       {todos
         .filter((todo) => !todo.done)
         .sort((a, b) => {
@@ -215,7 +215,6 @@ export default function Todos({ projectId, list = true}) {
       </ul>
 
       <hr className="my-4 border-gray-300 dark:border-gray-600"/>
-      </div>
       <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
         To Do's Verlauf
       </h3>

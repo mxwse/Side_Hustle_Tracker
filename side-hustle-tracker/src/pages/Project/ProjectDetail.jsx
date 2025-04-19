@@ -72,11 +72,10 @@ export default function ProjectDetail() {
       {/* Tab Content */}
       {selectedTab === "overview" && (
         <div>
-          <Todos projectId={projectId} list={false} />
-          <br />
           <IncomeOverview/>
           <ProfitChart />
-          
+          <br />
+          <Todos projectId={projectId} create={false} active={true} />
         </div>
       )}
       {selectedTab === "entries" && (
