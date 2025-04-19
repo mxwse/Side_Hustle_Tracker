@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../../lib/supabaseClient";
-import AddProject from "./AddProject";
+import AddProject from "../AddTableRow/AddProject";
 
 export default function ProjectList({ refresh, addProject }) {
   const [projects, setProjects] = useState([]);

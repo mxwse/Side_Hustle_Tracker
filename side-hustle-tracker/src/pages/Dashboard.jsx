@@ -1,11 +1,12 @@
 import { useState } from "react"
-import AddProject from "../components/AddProject"
-import ProjectList from "../components/ProjectList"
-import ThemeToggle from "../components/ThemeToggle"
 import { useEffect } from "react"
-import RecentComments from "../components/RecentComments"
 import { supabase } from "../lib/supabaseClient"
-import TransactionListAllProjects from "../components/TransactionListAllProjects"
+
+import AddProject from "../components/AddTableRow/AddProject"
+import ProjectList from "../components/Project/ProjectList"
+import ThemeToggle from "../components/Visuals/ThemeToggle"
+import RecentComments from "../components/Comment/RecentComments"
+import TransactionListAllProjects from "../components/Transactions/TransactionListAllProjects"
 
 export default function Dashboard() {
   const [refreshKey, setRefreshKey] = useState(0)

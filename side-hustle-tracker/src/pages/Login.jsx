@@ -1,7 +1,8 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { supabase } from "../lib/supabaseClient"
-import ThemeToggle from "../components/ThemeToggle"
+
+import ThemeToggle from "../components/Visuals/ThemeToggle"
 
 export default function Login() {
   const [email, setEmail] = useState("")

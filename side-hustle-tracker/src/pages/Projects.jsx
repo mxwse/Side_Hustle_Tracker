@@ -1,5 +1,5 @@
-import ProjectList from "../components/ProjectList"
-import ThemeToggle from "../components/ThemeToggle"
+import ProjectList from "../components/Project/ProjectList"
+import ThemeToggle from "../components/Visuals/ThemeToggle"
 
 export default function Projects() {
   return (

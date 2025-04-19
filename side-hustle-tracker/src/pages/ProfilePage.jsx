@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabaseClient";
-import ThemeToggle from "../components/ThemeToggle";
+
+import ThemeToggle from "../components/Visuals/ThemeToggle";
 
 export default function ProfilePage() {
   const [profile, setProfile] = useState(null);

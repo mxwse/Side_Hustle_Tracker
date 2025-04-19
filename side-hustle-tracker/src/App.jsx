@@ -1,9 +1,11 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
+
+
+import Layout from "./components/Visuals/Layout"
+import ProtectedRoute from "./components/ProtectedRoute"
 import Dashboard from "./pages/Dashboard"
 import Projects from "./pages/Projects"
 import Login from "./pages/Login"
-import Layout from "./components/Layout"
-import ProtectedRoute from "./components/ProtectedRoute"
 import Register from "./pages/Register"
 import ProjectDetail from "./pages/ProjectDetail"
 import Transaction from "./pages/Transactions"

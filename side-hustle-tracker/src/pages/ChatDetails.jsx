@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { supabase } from "../lib/supabaseClient";
-import ThemeToggle from "../components/ThemeToggle"
+import ThemeToggle from "../components/Visuals/ThemeToggle"
 
 export default function ChatDetail() {
   const { chatId } = useParams();

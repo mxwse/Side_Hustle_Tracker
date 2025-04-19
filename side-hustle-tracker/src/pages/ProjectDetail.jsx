@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import { supabase } from "../lib/supabaseClient";
 import { useEffect, useState } from "react";
+
 import ThemeToggle from "../components/Visuals/ThemeToggle"
 import TransactionList from "../components/Transactions/TransactionList";
 import CommentList from "../components/Comment/CommentList";

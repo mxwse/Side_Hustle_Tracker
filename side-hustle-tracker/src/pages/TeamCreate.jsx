@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react"
 import { supabase } from "../lib/supabaseClient"
-import { useNavigate } from "react-router-dom"
-import CreateTeam from "../components/CreateTeam"
-import ThemeToggle from "../components/ThemeToggle"
+
+import CreateTeam from "../components/AddTableRow/CreateTeam"
+import ThemeToggle from "../components/Visuals/ThemeToggle"
 
 export default function TeamCreate() {
-    const [teams, setTeams] = useState([])
-  const [loading, setLoading] = useState(true)
-  const navigate = useNavigate()
+    const [setTeams] = useState([])
+  const [setLoading] = useState(true)
   const fetchTeams = async () => {
     const user = (await supabase.auth.getUser()).data.user
 
