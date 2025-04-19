@@ -63,7 +63,7 @@ export default function Dashboard() {
           </div>
         </div>
         <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow mt-6">
-          <h2 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Letzte 5 Buchungen</h2>
+          <h2 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Letzte Buchungen</h2>
           <TransactionListAllProjects limit={5} scrollable={true}/>
         </div>
           <div className="grid md:grid-cols-2 gap-4">
