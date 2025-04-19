@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react"
-import { supabase } from "../lib/supabaseClient"
+import { supabase } from "../../lib/supabaseClient"
 
-import CreateTeam from "../components/AddTableRow/CreateTeam"
-import ThemeToggle from "../components/Visuals/ThemeToggle"
+import CreateTeam from "../../components/AddTableRow/CreateTeam"
+import ThemeToggle from "../../components/Visuals/ThemeToggle"
 
 export default function TeamCreate() {
     const [setTeams] = useState([])

@@ -1,5 +1,5 @@
-import ThemeToggle from "../components/Visuals/ThemeToggle"
-import TransactionListAllProjects from "../components/Transactions/TransactionListAllProjects"
+import ThemeToggle from "../../components/Visuals/ThemeToggle"
+import TransactionListAllProjects from "../../components/Transactions/TransactionListAllProjects"
 
 export default function Transaction() {
 

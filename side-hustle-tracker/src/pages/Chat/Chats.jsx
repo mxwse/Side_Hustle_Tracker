@@ -1,6 +1,6 @@
-import ChatsList from "../components/Chat/ChatsList";
-import CreateChat from "../components/AddTableRow/CreateChat";
-import ThemeToggle from "../components/Visuals/ThemeToggle"
+import ChatsList from "../../components/Chat/ChatsList";
+import CreateChat from "../../components/AddTableRow/CreateChat";
+import ThemeToggle from "../../components/Visuals/ThemeToggle"
 
 export default function Chats() {
   return (

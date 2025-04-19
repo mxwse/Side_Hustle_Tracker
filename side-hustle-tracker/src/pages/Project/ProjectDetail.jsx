@@ -1,16 +1,16 @@
 import { useParams } from "react-router-dom";
-import { supabase } from "../lib/supabaseClient";
+import { supabase } from "../../lib/supabaseClient";
 import { useEffect, useState } from "react";
 
-import ThemeToggle from "../components/Visuals/ThemeToggle"
-import TransactionList from "../components/Transactions/TransactionList";
-import CommentList from "../components/Comment/CommentList";
-import AddComment from "../components/AddTableRow/AddComment";
-import AddEntry from "../components/AddTableRow/AddEntry";
-import ProfitChart from "../components/Transactions/ProfitChart";
-import IncomeOverview from "../components/Transactions/IncomeOverview";
-import ProjectDetails from "../components/Project/ProjectDetails";
-import Todos from "../components/ToDo/ToDoList";
+import ThemeToggle from "../../components/Visuals/ThemeToggle"
+import TransactionList from "../../components/Transactions/TransactionList";
+import CommentList from "../../components/Comment/CommentList";
+import AddComment from "../../components/AddTableRow/AddComment";
+import AddEntry from "../../components/AddTableRow/AddEntry";
+import ProfitChart from "../../components/Transactions/ProfitChart";
+import IncomeOverview from "../../components/Transactions/IncomeOverview";
+import ProjectDetails from "../../components/Project/ProjectDetails";
+import Todos from "../../components/ToDo/ToDoList";
 
 export default function ProjectDetail() {
   const { id: projectId } = useParams();

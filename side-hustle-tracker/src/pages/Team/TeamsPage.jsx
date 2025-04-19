@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react"
-import { supabase } from "../lib/supabaseClient"
+import { supabase } from "../../lib/supabaseClient"
 import { useNavigate } from "react-router-dom"
 
-import ThemeToggle from "../components/Visuals/ThemeToggle"
+import ThemeToggle from "../../components/Visuals/ThemeToggle"
 
 export default function TeamsPage() {
   const [teams, setTeams] = useState([])
