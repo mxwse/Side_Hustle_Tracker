@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function InvoiceForm({ onGenerate }) {
+export default function InvoiceForm({ onGenerate, project_id }) {
   const [form, setForm] = useState({
     from: { name: "", address: "", phone: "", fax: "" },
     to: { name: "", company: "", address: "", phone: "" },
@@ -15,6 +15,9 @@ export default function InvoiceForm({ onGenerate }) {
 
   const [items, setItems] = useState([{ qty: 1, description: "", price: 0 }]);
 
+  const [success, setSuccess] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+
   const updateItem = (index, field, value) => {
     const newItems = [...items];
     newItems[index][field] = field === "qty" || field === "price" ? Number(value) : value;
@@ -27,7 +30,14 @@ export default function InvoiceForm({ onGenerate }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onGenerate({ ...form, items });
+    if (submitting) return; // schützt vor Doppeleinreichung
+    setSubmitting(true);
+  
+    onGenerate({ ...form, items, project_id });
+  
+    setSuccess(true);
+  
+    setTimeout(() => {window.location.reload();}, 2000);
   };
 
   const inputStyle =
@@ -115,10 +125,19 @@ export default function InvoiceForm({ onGenerate }) {
       </section>
 
       <div className="text-right">
-        <button type="submit"
-          className="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-3 rounded shadow">
+        <button
+          type="submit"
+          disabled={submitting}
+          className="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-3 rounded shadow disabled:opacity-50"
+        >
           📄 PDF generieren
         </button>
+
+        {success && (
+          <p className="text-green-600 text-sm mt-2 animate-fade-in">
+            ✅ Rechnung erfolgreich erstellt!
+          </p>
+        )}
       </div>
     </form>
   );

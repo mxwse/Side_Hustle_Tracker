@@ -109,7 +109,7 @@ export default function ProjectDetail() {
       )}
       {selectedTab === "invoices" && (
         <div>
-          <InvoiceForm onGenerate={generatePDF} />
+          <InvoiceForm project_id={projectId} onGenerate={generatePDF} />
           <br />
           <InvoiceList projectId={projectId} />
         </div>
