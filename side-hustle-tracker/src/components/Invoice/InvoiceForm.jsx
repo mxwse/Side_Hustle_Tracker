@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+
 export default function InvoiceForm({ onGenerate, project_id }) {
   const [form, setForm] = useState({
     from: { name: "", address: "", phone: "", fax: "" },
@@ -12,7 +13,6 @@ export default function InvoiceForm({ onGenerate, project_id }) {
     tax: 19,
     shipping: 0,
   });
-
   const [items, setItems] = useState([{ qty: 1, description: "", price: 0 }]);
 
   const [success, setSuccess] = useState(false);
