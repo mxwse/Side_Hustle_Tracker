@@ -79,7 +79,7 @@ export default function AddTeamDetails({ teamId }) {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <h2 className="text-xl font-bold text-gray-800 dark:text-white">
-        {existingId ? "✏️ Teamdaten bearbeiten" : "📋 Teamdetails hinzufügen"}
+        {existingId ? "Teamdaten bearbeiten" : "Teamdetails hinzufügen"}
       </h2>
 
       {["name", "address", "phone", "fax", "email"].map((field) => (

@@ -44,7 +44,6 @@ export default function ProjectDetail() {
     { key: "details", label: "Details" },
     { key: "invoices", label: "Rechnungen" },
   ];
-
   if (!project) return <p className="p-6">Projekt wird geladen...</p>;
 
   return (
@@ -109,7 +108,7 @@ export default function ProjectDetail() {
       )}
       {selectedTab === "invoices" && (
         <div>
-          <InvoiceForm project_id={projectId} onGenerate={generatePDF} />
+          <InvoiceForm project_id={projectId} onGenerate={generatePDF} teamId={project.team_id} />
           <br />
           <InvoiceList projectId={projectId} />
         </div>
