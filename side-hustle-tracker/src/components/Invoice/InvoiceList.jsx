@@ -1,18 +1,17 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../../lib/supabaseClient";
 
-export default function InvoiceList() {
+export default function InvoiceList({projectId}) {
   const [invoices, setInvoices] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchInvoices = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
 
       const { data, error } = await supabase
         .from("invoices")
         .select("*, projects(name)")
-        .eq("user_id", user.id)
+        .eq("project_id", projectId)
         .order("created_at", { ascending: false });
 
       if (!error) {
@@ -23,13 +22,13 @@ export default function InvoiceList() {
     };
 
     fetchInvoices();
-  }, []);
+  }, [projectId]);
 
   if (loading) return <p className="p-4 text-gray-500">⏳ Lade Rechnungen...</p>;
 
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white dark:bg-gray-800 rounded shadow space-y-4">
-      <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Meine Rechnungen</h2>
+      <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Rechnungen</h2>
 
       {invoices.length === 0 && (
         <p className="text-gray-500 dark:text-gray-400">Noch keine Rechnungen vorhanden.</p>

@@ -72,11 +72,11 @@ export default function InvoiceForm({ onGenerate, project_id, teamId }) {
 
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-8">
+    <form onSubmit={handleSubmit} className="space-y-1">
 
       {/* Absender */}
       <section className="bg-white dark:bg-gray-800 p-6 rounded shadow">
-        <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white">📦 Absender</h2>
+        <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white">Absender</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {["name", "address", "phone", "fax"].map((field) => (
             <input
@@ -98,7 +98,7 @@ export default function InvoiceForm({ onGenerate, project_id, teamId }) {
 
       {/* Empfänger */}
       <section className="bg-white dark:bg-gray-800 p-6 rounded shadow">
-        <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white">👤 Empfänger</h2>
+        <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white">Empfänger</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {["name", "company", "address", "phone"].map((field) => (
             <input
@@ -120,7 +120,7 @@ export default function InvoiceForm({ onGenerate, project_id, teamId }) {
 
       {/* Rechnung */}
       <section className="bg-white dark:bg-gray-800 p-6 rounded shadow">
-        <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white">📄 Rechnung</h2>
+        <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white">Rechnung</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <input
             placeholder="Rechnungsnummer"
@@ -161,7 +161,7 @@ export default function InvoiceForm({ onGenerate, project_id, teamId }) {
 
       {/* Positionen */}
       <section className="bg-white dark:bg-gray-800 p-6 rounded shadow">
-        <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white">🧾 Positionen</h2>
+        <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white">Positionen</h2>
         <div className="space-y-4">
           {items.map((item, index) => (
             <div key={index} className="grid grid-cols-1 md:grid-cols-5 gap-3 items-center">
@@ -201,7 +201,7 @@ export default function InvoiceForm({ onGenerate, project_id, teamId }) {
 
       {/* Zusatzkosten */}
       <section className="bg-white dark:bg-gray-800 p-6 rounded shadow">
-        <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white">💰 Zusatzkosten</h2>
+        <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white">Zusatzkosten</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
@@ -239,7 +239,7 @@ export default function InvoiceForm({ onGenerate, project_id, teamId }) {
           disabled={submitting}
           className="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-3 rounded shadow disabled:opacity-50"
         >
-          📄 PDF generieren
+          Rechnung erstellen
         </button>
 
         {success && (
