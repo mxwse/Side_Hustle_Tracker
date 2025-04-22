@@ -33,7 +33,7 @@ export default function AddComment({ projectId, onCommentAdded }) {
 
   return (
     <form onSubmit={handleSubmit} className="bg-white dark:bg-gray-800 p-4 rounded shadow space-y-3 mt-6">
-      <h2 className="text-lg font-semibold text-gray-800 dark:text-white">💬 Kommentar hinzufügen</h2>
+      <h2 className="text-lg font-semibold text-gray-800 dark:text-white">Kommentar hinzufügen</h2>
 
       <textarea
         value={comment}

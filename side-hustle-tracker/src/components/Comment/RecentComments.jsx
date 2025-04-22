@@ -27,7 +27,7 @@ export default function RecentComments() {
 
   return (
     <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow max-h-64 overflow-y-auto">
-      <h2 className="text-lg font-semibold mb-3 text-gray-800 dark:text-white">🗨 Letzte Kommentare</h2>
+      <h2 className="text-lg font-semibold mb-3 text-gray-800 dark:text-white">Letzte Kommentare</h2>
 
       {comments.length === 0 ? (
         <p className="text-sm text-gray-600 dark:text-gray-400">Keine Kommentare vorhanden.</p>

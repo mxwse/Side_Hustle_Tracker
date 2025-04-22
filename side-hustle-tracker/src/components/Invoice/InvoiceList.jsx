@@ -29,7 +29,7 @@ export default function InvoiceList() {
 
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white dark:bg-gray-800 rounded shadow space-y-4">
-      <h2 className="text-2xl font-bold text-gray-900 dark:text-white">📂 Meine Rechnungen</h2>
+      <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Meine Rechnungen</h2>
 
       {invoices.length === 0 && (
         <p className="text-gray-500 dark:text-gray-400">Noch keine Rechnungen vorhanden.</p>
@@ -39,10 +39,10 @@ export default function InvoiceList() {
         <table className="w-full table-auto border-collapse text-sm">
           <thead className="bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 uppercase">
             <tr>
-              <th className="text-left p-2">📁 Projekt</th>
+              <th className="text-left p-2">Projekt</th>
               <th className="text-left p-2"># Nummer</th>
-              <th className="text-left p-2">💰 Betrag</th>
-              <th className="text-left p-2">📅 Datum</th>
+              <th className="text-left p-2">Betrag</th>
+              <th className="text-left p-2">Datum</th>
               <th className="text-left p-2">⬇️</th>
             </tr>
           </thead>

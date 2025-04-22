@@ -82,7 +82,7 @@ export default function TeamDetail() {
 
   return (
     <div className="max-w-3xl mx-auto p-6 text-gray-900 dark:text-gray-100">
-      <h1 className="text-2xl font-bold mb-6">👥 Team-Mitglieder</h1>
+      <h1 className="text-2xl font-bold mb-6">Team-Mitglieder</h1>
 
       {error && (
         <p className="text-red-500 text-sm mb-4">{error}</p>

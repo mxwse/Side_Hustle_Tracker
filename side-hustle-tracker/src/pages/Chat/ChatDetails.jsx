@@ -101,7 +101,7 @@ export default function ChatDetail() {
     <div className="flex flex-col max-w-4xl mx-auto p-6 min-h-screen">
       <ThemeToggle />
       <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">
-        💬 {chatName || "Chat"}
+        {chatName || "Chat"}
       </h2>
 
       <div

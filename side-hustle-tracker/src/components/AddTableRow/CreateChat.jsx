@@ -81,7 +81,7 @@ export default function CreateChat({ onCreated }) {
       onSubmit={handleCreate}
       className="max-w-md bg-white dark:bg-gray-800 p-6 rounded shadow space-y-4"
     >
-      <h2 className="text-xl font-bold text-gray-900 dark:text-white">➕ Chat erstellen</h2>
+      <h2 className="text-xl font-bold text-gray-900 dark:text-white">Chat erstellen</h2>
 
       <input
         type="text"

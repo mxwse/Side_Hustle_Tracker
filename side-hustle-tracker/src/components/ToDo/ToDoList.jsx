@@ -112,7 +112,7 @@ export default function Todos({ projectId, active = true, create = true }) {
     <div className="bg-white dark:bg-gray-800 p-6 rounded shadow">
         <div className={create ? "" : "hidden"}> 
             <h2 className="text-lg font-semibold text-gray-800 dark:text-white mb-4">
-                ✅ To Do Liste
+                To Do Liste
             </h2>
 
             <form onSubmit={addTodo} className="flex flex-col md:flex-row gap-2 mb-4">

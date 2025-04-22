@@ -22,7 +22,7 @@ export default function CommentList({ projectId, refreshKey }) {
 
   return (
     <div className="bg-white dark:bg-gray-800 p-4 rounded shadow mt-6">
-      <h2 className="text-lg font-semibold mb-3 text-gray-800 dark:text-white">🗨 Kommentare</h2>
+      <h2 className="text-lg font-semibold mb-3 text-gray-800 dark:text-white">Kommentare</h2>
       {comments.length === 0 ? (
         <p className="text-gray-600 dark:text-gray-400 text-sm">Keine Kommentare vorhanden.</p>
       ) : (

@@ -55,7 +55,7 @@ export default function CreateTeam({ onTeamCreated }) {
       onSubmit={handleCreate}
       className="bg-white dark:bg-gray-800 p-6 rounded shadow max-w-xl w-full space-y-4"
     >
-      <h2 className="text-xl font-semibold text-gray-800 dark:text-white">🛠 Team erstellen</h2>
+      <h2 className="text-xl font-semibold text-gray-800 dark:text-white">Team erstellen</h2>
 
       <input
         type="text"

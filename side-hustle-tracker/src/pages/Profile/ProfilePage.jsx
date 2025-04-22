@@ -93,7 +93,7 @@ export default function ProfilePage() {
 
   return (
     <div className="max-w-xl mx-auto p-6 space-y-6 bg-white dark:bg-gray-800 rounded shadow">
-      <h1 className="text-2xl font-bold text-gray-800 dark:text-white">👤 Mein Profil</h1>
+      <h1 className="text-2xl font-bold text-gray-800 dark:text-white">Mein Profil</h1>
         <ThemeToggle />
       <form onSubmit={handleSave} className="space-y-4">
         {/* Avatar */}

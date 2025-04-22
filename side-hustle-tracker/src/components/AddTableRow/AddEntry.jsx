@@ -31,7 +31,7 @@ export default function AddComment() {
 
   return (
     <form onSubmit={handleAddEntry} className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow mb-6 space-y-4">
-          <h2 className="text-lg font-semibold">➕ Neue Buchung</h2>
+          <h2 className="text-lg font-semibold">Neue Buchung</h2>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <select
               className="border border-gray-300 dark:border-gray-600 rounded px-3 py-2 bg-white dark:bg-gray-700 dark:text-white"

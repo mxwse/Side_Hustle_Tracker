@@ -46,7 +46,7 @@ import {
         }, [id, refresh])  
     return (
         <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow mt-6">
-            <h2 className="text-lg font-semibold mb-4">📈 Gewinnentwicklung</h2>
+            <h2 className="text-lg font-semibold mb-4">Gewinnentwicklung</h2>
                 <ResponsiveContainer width="100%" height={300}>
                 <LineChart data={profitChartData}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#ccc" />

@@ -46,7 +46,7 @@ export default function InvoiceForm({ onGenerate, project_id }) {
   return (
     <form onSubmit={handleSubmit} className="space-y-8">
       <section className="bg-white dark:bg-gray-800 p-6 rounded shadow">
-        <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white">📦 Absender</h2>
+        <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white">Absender</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <input placeholder="Firmenname" className={inputStyle} value={form.from.name}
             onChange={(e) => setForm({ ...form, from: { ...form.from, name: e.target.value } })} />
@@ -60,7 +60,7 @@ export default function InvoiceForm({ onGenerate, project_id }) {
       </section>
 
       <section className="bg-white dark:bg-gray-800 p-6 rounded shadow">
-        <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white">👤 Empfänger</h2>
+        <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white">Empfänger</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <input placeholder="Name" className={inputStyle} value={form.to.name}
             onChange={(e) => setForm({ ...form, to: { ...form.to, name: e.target.value } })} />
@@ -74,7 +74,7 @@ export default function InvoiceForm({ onGenerate, project_id }) {
       </section>
 
       <section className="bg-white dark:bg-gray-800 p-6 rounded shadow">
-        <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white">📄 Rechnung</h2>
+        <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white">Rechnung</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <input placeholder="Rechnungsnummer" className={inputStyle} value={form.invoice.number}
             onChange={(e) => setForm({ ...form, invoice: { ...form.invoice, number: e.target.value } })} />
@@ -87,7 +87,7 @@ export default function InvoiceForm({ onGenerate, project_id }) {
       </section>
 
       <section className="bg-white dark:bg-gray-800 p-6 rounded shadow">
-        <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white">🧾 Positionen</h2>
+        <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white">Positionen</h2>
         <div className="space-y-4">
           {items.map((item, index) => (
             <div key={index} className="grid grid-cols-1 md:grid-cols-5 gap-3 items-center">
@@ -109,7 +109,7 @@ export default function InvoiceForm({ onGenerate, project_id }) {
       </section>
 
       <section className="bg-white dark:bg-gray-800 p-6 rounded shadow">
-        <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white">💰 Zusatzkosten</h2>
+        <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white">Zusatzkosten</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">MwSt. (%)</label>
