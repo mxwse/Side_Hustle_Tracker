@@ -5,21 +5,19 @@ import CreateTeam from "../../components/AddTableRow/CreateTeam"
 import ThemeToggle from "../../components/Visuals/ThemeToggle"
 
 export default function TeamCreate() {
-    const [setTeams] = useState([])
+  const [setTeams] = useState([])
   const [setLoading] = useState(true)
   const fetchTeams = async () => {
-    const user = (await supabase.auth.getUser()).data.user
+  const user = (await supabase.auth.getUser()).data.user
 
-    const { data, error } = await supabase
-      .from("team_members")
-      .select("role, joined_at, teams(id, name)")
-      .eq("user_id", user.id)
-
-    if (!error) {
-      setTeams(data)
-    }
-
-    setLoading(false)
+  const { data, error } = await supabase
+     .from("team_members")
+     .select("role, joined_at, teams(id, name)")
+     .eq("user_id", user.id)
+   if (!error) {
+     setTeams(data)
+   }
+   setLoading(false)
   }
 
   useEffect(() => {

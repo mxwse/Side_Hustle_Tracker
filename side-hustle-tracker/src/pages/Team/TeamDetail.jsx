@@ -2,6 +2,8 @@ import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { supabase } from "../../lib/supabaseClient"
 
+import AddTeamDetails from "../../components/AddTableRow/AddTeamDetails"
+
 export default function TeamDetail() {
   const { id: teamId } = useParams()
   const [members, setMembers] = useState([])
@@ -112,23 +114,26 @@ export default function TeamDetail() {
       )}
 
       {["Admin", "Manager"].includes(role) && (
-        <form onSubmit={handleInvite} className="mt-8 space-y-3">
-          <h2 className="text-lg font-semibold">➕ Mitglied einladen</h2>
-          <input
-            type="email"
-            placeholder="E-Mail-Adresse"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full p-2 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-            required
-          />
-          <button
-            type="submit"
-            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
-          >
-            Mitglied hinzufügen
-          </button>
-        </form>
+        <div>
+          <form onSubmit={handleInvite} className="mt-8 space-y-3">
+            <h2 className="text-lg font-semibold">Mitglied einladen</h2>
+            <input
+              type="email"
+              placeholder="E-Mail-Adresse"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full p-2 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+              required
+            />
+            <button
+              type="submit"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
+            >
+              Mitglied hinzufügen
+            </button>
+          </form>
+          <AddTeamDetails teamId={teamId}/>
+      </div>
       )}
     </div>
   )
