@@ -8,7 +8,7 @@ export default function Projects() {
       <ThemeToggle />
       <h1 className="text-2xl font-bold mb-6">Meine Projekte</h1>
       <div className="">
-        <ProjectList addProject={1}/>
+        <ProjectList addProject={1} filter={true}/>
       </div>
     </div>
   )

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "../../lib/supabaseClient";
 import AddProject from "../AddTableRow/AddProject";
 
-export default function ProjectList({ refresh, addProject }) {
+export default function ProjectList({ refresh, addProject, filter =true }) {
   const [projects, setProjects] = useState([]);
   const [teams, setTeams] = useState([]);
   const [selectedTeamId, setSelectedTeamId] = useState("");
@@ -75,7 +75,7 @@ export default function ProjectList({ refresh, addProject }) {
       )}
 
       {/* Team-Filter */}
-      <div className="mb-4">
+      <div className={filter ? "mb-4" : "hidden"}>
         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
           🔽 Team filtern:
         </label>
