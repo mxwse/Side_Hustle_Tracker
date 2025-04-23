@@ -47,7 +47,7 @@ export default function AddProject({ onProjectAdded }) {
   }, []);
 
   return (
-    <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-1 gap-4">
+    <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-1 gap-4 p-4 bg-white dark:bg-gray-800 rounded shadow">
       <h2 className="text-xl font-bold mb-4 text-gray-900 dark:text-white">Neues Projekt anlegen</h2>
       <input
         type="text"
