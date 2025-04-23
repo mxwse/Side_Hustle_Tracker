@@ -55,7 +55,7 @@ export default function ProjectList({ refresh, addProject }) {
   return (
     <div>
       {addProject === 1 && (
-        <div className="w-full max-w-md mx-auto bg-white dark:bg-gray-800 p-4 rounded shadow">
+        <div className="">
           <AddProject onProjectAdded={fetchProjects} />
         </div>
       )}
