@@ -57,19 +57,21 @@ export default function ToDoList({todos, active = true, onUpdated }) {
                       {todo.description}
                     </p>
                     <p className="text-sm text-gray-500 dark:text-gray-400">
-                      {todo.created_by} •{" "}
+                      {todo.created_by}
+                    </p>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">
                       {dueDate
                         ? "Fällig: " + dueDate.toLocaleDateString("de-DE")
-                        : "Kein Fälligkeitsdatum"}•{" "}
+                        : "Kein Fälligkeitsdatum"}
                       {todo.created_at
-                        ? "Erstellt: " +
+                        ? " • Erstellt: " +
                           new Date(todo.created_at).toLocaleDateString("de-DE")
-                        : ""} •{" "}
+                        : ""}
                       {todo.completed_at
-                        ? "Erledigt: " +
+                        ? " • Erledigt: " +
                           new Date(todo.completed_at).toLocaleDateString("de-DE")
                         : ""}
-                    </p>
+                        </p>
                   </div>
                   <div className="flex flex-col items-end gap-1">
                     {!todo.done && (
