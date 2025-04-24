@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import { supabase } from "../../lib/supabaseClient";
 import { useEffect, useState } from "react";
 
-import ThemeToggle from "../../components/Visuals/ThemeToggle"
+import ThemeToggle from "../../components/Visuals/ThemeToggle";
 import TransactionList from "../../components/Transactions/TransactionList";
 import CommentList from "../../components/Comment/CommentList";
 import AddComment from "../../components/AddTableRow/AddComment";
@@ -14,27 +14,42 @@ import Todos from "../../components/ToDo/ToDoList";
 import InvoiceList from "../../components/Invoice/InvoiceList";
 import InvoiceForm from "../../components/Invoice/InvoiceForm";
 import { generatePDF } from "../../components/Invoice/InvoicePDFGenerator";
+import AddToDo from "../../components/AddTableRow/AddToDo";
 
 export default function ProjectDetail() {
   const { id: projectId } = useParams();
   const [project, setProject] = useState(null);
   const [selectedTab, setSelectedTab] = useState("overview");
+  const [todos, setTodos] = useState([]);
 
   useEffect(() => {
-              const fetchProject = async () => {
-                const { data, error } = await supabase
-                  .from("projects")
-                  .select("*, profiles(id, username, email)")
-                  .eq("id", projectId)
-                  .single();
-          
-                if (!error) {
-                  setProject(data);
-                }
-              };
-          
-              fetchProject();
-            }, [projectId]);
+    const fetchProject = async () => {
+      const { data, error } = await supabase
+        .from("projects")
+        .select("*, profiles(id, username, email)")
+        .eq("id", projectId)
+        .single();
+
+      if (!error) setProject(data);
+    };
+
+    fetchProject();
+  }, [projectId]);
+
+  const loadTodos = async () => {
+    const { data, error } = await supabase
+      .from("todos")
+      .select("*")
+      .eq("project_id", projectId)
+      .order("created_at", { ascending: true });
+
+    if (!error) setTodos(data);
+    else console.error("Fehler beim Laden der ToDos:", error.message);
+  };
+
+  useEffect(() => {
+    if (projectId) loadTodos();
+  }, [projectId]);
 
   const tabs = [
     { key: "overview", label: "Übersicht" },
@@ -44,6 +59,7 @@ export default function ProjectDetail() {
     { key: "details", label: "Details" },
     { key: "invoices", label: "Rechnungen" },
   ];
+
   if (!project) return <p className="p-6">Projekt wird geladen...</p>;
 
   return (
@@ -75,16 +91,17 @@ export default function ProjectDetail() {
       {/* Tab Content */}
       {selectedTab === "overview" && (
         <div>
-          <IncomeOverview/>
+          <IncomeOverview />
           <ProfitChart />
           <br />
-          <Todos projectId={projectId} create={false} active={true} />
+          <Todos projectId={projectId} todos={todos} active={true} onUpdated={loadTodos} />
         </div>
       )}
+
       {selectedTab === "entries" && (
         <div className="space-y-4">
           <AddEntry />
-          <TransactionList limit={9} scrollable={false} project={projectId}/>
+          <TransactionList limit={9} scrollable={false} project={projectId} />
         </div>
       )}
 
@@ -97,7 +114,10 @@ export default function ProjectDetail() {
 
       {selectedTab === "notes" && (
         <div>
-          <Todos projectId={projectId} list={true} />
+          <AddToDo projectId={projectId} onTodoAdded={loadTodos} />
+          <Todos projectId={projectId} todos={todos} active={true} onUpdated={loadTodos} />
+          <h3 className="mt-6 text-lg font-semibold text-gray-700 dark:text-gray-300">✅ Erledigt</h3>
+          <Todos projectId={projectId} todos={todos} active={false} onUpdated={loadTodos} />
         </div>
       )}
 
@@ -106,6 +126,7 @@ export default function ProjectDetail() {
           <ProjectDetails projectId={projectId} />
         </div>
       )}
+
       {selectedTab === "invoices" && (
         <div>
           <InvoiceForm project_id={projectId} onGenerate={generatePDF} teamId={project.team_id} />
