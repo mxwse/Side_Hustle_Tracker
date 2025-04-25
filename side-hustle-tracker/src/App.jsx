@@ -16,6 +16,7 @@ import TeamCreate from "./pages/Team/TeamCreate"
 import Chats from "./pages/Chat/Chats"
 import ChatDetail from "./pages/Chat/ChatDetails"
 import ProfilePage from "./pages/Profile/ProfilePage"
+import ProjectsArchive from "./pages/Project/ProjectsArchive"
 
 function App() {
   return (
@@ -56,6 +57,16 @@ function App() {
             <ProtectedRoute>
               <Layout>
                 <ProjectDetail />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/projects/archive"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <ProjectsArchive />
               </Layout>
             </ProtectedRoute>
           }

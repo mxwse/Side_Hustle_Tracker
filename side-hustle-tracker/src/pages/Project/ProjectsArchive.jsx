@@ -2,57 +2,50 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../../lib/supabaseClient";
 
-import AddProject from "../AddTableRow/AddProject";
-import ProjectTeamFilter from "./ProjectTeamFilter";
+import ProjectTeamFilter from "../../components/Project/ProjectTeamFilter";
 
-export default function ProjectList({ refresh, addProject}) {
+export default function ProjectsArchive() {
   const [projects, setProjects] = useState([]);
   const [teams, setTeams] = useState([]);
   const [selectedTeamId, setSelectedTeamId] = useState("");
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
   const navigate = useNavigate();
-
-  const fetchProjects = async () => {
-    setLoading(true);
-    setError("");
-
-    try {
-      let query = supabase
-        .from("projects")
-        .select("*, teams(*)")
-        .order("created_at", { ascending: false });
-
-      if (selectedTeamId) {
-        query = query.eq("team_id", selectedTeamId);
-      }
-
-      const { data, error } = await query;
-
-      if (error) {
-        console.error("❌ Fehler beim Laden der Projekte:", error);
-        setError("Fehler beim Laden der Projekte.");
-      } else {
-        setProjects(data);
-      }
-    } catch (err) {
-      console.error("❌ Unerwarteter Fehler:", err);
-      setError("Ein unerwarteter Fehler ist aufgetreten.");
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const fetchTeams = async () => {
     const user = (await supabase.auth.getUser()).data.user;
+
     const { data, error } = await supabase
       .from("team_members")
       .select("team_id, teams(name)")
       .eq("user_id", user.id);
 
     if (!error) {
-      setTeams(data);
+      setTeams(data || []);
     }
+  };
+
+  const fetchArchivedProjects = async () => {
+    setLoading(true);
+
+    let query = supabase
+      .from("projects")
+      .select("*, teams(name)")
+      .eq("is_archived", true)
+      .order("created_at", { ascending: false });
+
+    if (selectedTeamId) {
+      query = query.eq("team_id", selectedTeamId);
+    }
+
+    const { data, error } = await query;
+
+    if (!error) {
+      setProjects(data || []);
+    } else {
+      console.error("Fehler beim Laden der archivierten Projekte:", error.message);
+    }
+
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -60,31 +53,26 @@ export default function ProjectList({ refresh, addProject}) {
   }, []);
 
   useEffect(() => {
-    fetchProjects();
-  }, [refresh, selectedTeamId]);
+    fetchArchivedProjects();
+  }, [selectedTeamId]);
 
   if (loading) return <p className="mt-4">⏳ Lade Projekte...</p>;
 
-  if (error)
-    return <p className="mt-4 text-red-500 dark:text-red-400">{error}</p>;
   return (
-    <div>
-      {addProject === 1 && (
-        <div className="bg-white dark:bg-gray-800 p-6 rounded shadow mb-4">
-          <AddProject onProjectAdded={fetchProjects} />
-        </div>
-      )}
+    <div className="max-w-4xl mx-auto p-6 space-y-6">
+      <h1 className="text-2xl font-bold text-gray-800 dark:text-white mb-4">
+        Archivierte Projekte
+      </h1>
 
-      {/* Team-Filter */}
       <ProjectTeamFilter
-        teams={teams || [" "]}
+        teams={teams}
         selectedTeamId={selectedTeamId}
         onChange={setSelectedTeamId}
       />
 
       {projects.length === 0 ? (
-        <p className="mt-4 text-gray-600 dark:text-gray-400">
-          Keine Projekte für dieses Team vorhanden.
+        <p className="text-gray-600 dark:text-gray-400">
+          Keine archivierten Projekte für dieses Team gefunden.
         </p>
       ) : (
         <div className="overflow-x-auto">
