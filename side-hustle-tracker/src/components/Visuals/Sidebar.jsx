@@ -9,6 +9,8 @@ export default function Sidebar() {
   const [open, setOpen] = useState(false)
   const navigate = useNavigate()
   const [teamOpen, setTeamOpen] = useState(false);
+  const [projectsOpen, setProjectsOpen] = useState(false);
+
 
   const handleLogout = async () => {
     await supabase.auth.signOut()
@@ -46,19 +48,56 @@ export default function Sidebar() {
             >
               Dashboard
             </NavLink>
-            <NavLink
-              to="/projects"
-              className={({ isActive }) =>
-                `block px-4 py-2 rounded transition-colors ${
-                  isActive
-                    ? "bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white"
-                    : "hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300"
-                }`
-              }
-              onClick={() => setOpen(false)}
-            >
-              Projekte
-            </NavLink>
+            <div>
+              <button
+                onClick={() => setProjectsOpen(!projectsOpen)}
+                className="flex items-center justify-between w-full px-4 py-2 rounded transition-colors hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300"
+              >
+                <span>Projekte</span>
+                <span>{projectsOpen ? "▲" : "▼"}</span>
+              </button>
+
+              {projectsOpen && (
+                <div className="ml-4 mt-2 space-y-1">
+                  <NavLink
+                    to="/projects"
+                    className={({ isActive }) =>
+                      `block px-4 py-1 rounded transition-colors ${
+                        isActive
+                          ? "bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white"
+                          : "hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300"
+                      }`
+                    }
+                  >
+                    Meine Projekte
+                  </NavLink>
+                  <NavLink
+                    to="/projects/archive"
+                    className={({ isActive }) =>
+                      `block px-4 py-1 rounded transition-colors ${
+                        isActive
+                          ? "bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white"
+                          : "hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300"
+                      }`
+                    }
+                  >
+                    Archiv
+                  </NavLink>
+                  <NavLink
+                    to="/projects/create"
+                    className={({ isActive }) =>
+                      `block px-4 py-1 rounded transition-colors ${
+                        isActive
+                          ? "bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white"
+                          : "hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300"
+                      }`
+                    }
+                  >
+                    Projekt anlegen
+                  </NavLink>
+                </div>
+              )}
+            </div>
             <NavLink
               to="/Transactions"
               className={({ isActive }) =>
