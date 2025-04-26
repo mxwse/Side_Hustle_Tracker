@@ -2,10 +2,9 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../../lib/supabaseClient";
 
-import AddProject from "../AddTableRow/AddProject";
 import ProjectTeamFilter from "./ProjectTeamFilter";
 
-export default function ProjectList({ refresh, addProject}) {
+export default function ProjectList({ refresh}) {
   const [projects, setProjects] = useState([]);
   const [teams, setTeams] = useState([]);
   const [selectedTeamId, setSelectedTeamId] = useState("");
@@ -69,12 +68,6 @@ export default function ProjectList({ refresh, addProject}) {
     return <p className="mt-4 text-red-500 dark:text-red-400">{error}</p>;
   return (
     <div>
-      {addProject === 1 && (
-        <div className="bg-white dark:bg-gray-800 p-6 rounded shadow mb-4">
-          <AddProject onProjectAdded={fetchProjects} />
-        </div>
-      )}
-
       {/* Team-Filter */}
       <ProjectTeamFilter
         teams={teams || [" "]}

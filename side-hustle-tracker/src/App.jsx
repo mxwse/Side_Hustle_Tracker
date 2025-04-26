@@ -17,6 +17,7 @@ import Chats from "./pages/Chat/Chats"
 import ChatDetail from "./pages/Chat/ChatDetails"
 import ProfilePage from "./pages/Profile/ProfilePage"
 import ProjectsArchive from "./pages/Project/ProjectsArchive"
+import ProjectCreate from "./pages/Project/ProjectCreate"
 
 function App() {
   return (
@@ -67,6 +68,16 @@ function App() {
             <ProtectedRoute>
               <Layout>
                 <ProjectsArchive />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/projects/create"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <ProjectCreate />
               </Layout>
             </ProtectedRoute>
           }
