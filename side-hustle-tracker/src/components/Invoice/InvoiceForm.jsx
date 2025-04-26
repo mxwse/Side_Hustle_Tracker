@@ -1,6 +1,6 @@
-import { useState } from "react";
-import { supabase } from "../../lib/supabaseClient"; 
-import { useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import { supabase } from "../../lib/supabaseClient";
+import InvoicePreview from "./InvoicePreview"; // Importiere die Vorschau-Komponente
 
 export default function InvoiceForm({ onGenerate, project_id, teamId }) {
   const [form, setForm] = useState({
@@ -14,7 +14,6 @@ export default function InvoiceForm({ onGenerate, project_id, teamId }) {
     tax: 19,
     shipping: 0,
   });
-  console.log("teamId", teamId);
   const [items, setItems] = useState([{ qty: 1, description: "", price: 0 }]);
   const [success, setSuccess] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -39,21 +38,22 @@ export default function InvoiceForm({ onGenerate, project_id, teamId }) {
 
   const addItem = () => setItems([...items, { qty: 1, description: "", price: 0 }]);
   const removeItem = (index) => setItems(items.filter((_, i) => i !== index));
+
   useEffect(() => {
     const fetchCompanyDetails = async () => {
       if (!teamId) return;
-  
+
       const { data, error } = await supabase
         .from("company_details")
         .select("*")
         .eq("team_id", teamId)
         .maybeSingle();
-  
+
       if (error) {
         console.error("Fehler beim Laden der Absenderdaten:", error.message);
         return;
       }
-  
+
       if (data) {
         setForm((prev) => ({
           ...prev,
@@ -66,14 +66,12 @@ export default function InvoiceForm({ onGenerate, project_id, teamId }) {
         }));
       }
     };
-  
+
     fetchCompanyDetails();
   }, [teamId]);
 
-
   return (
     <form onSubmit={handleSubmit} className="space-y-1">
-
       {/* Absender */}
       <section className="bg-white dark:bg-gray-800 p-6 rounded shadow">
         <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white">Absender</h2>
@@ -231,6 +229,9 @@ export default function InvoiceForm({ onGenerate, project_id, teamId }) {
           </div>
         </div>
       </section>
+
+      {/* Vorschau anzeigen */}
+      <InvoicePreview form={form} items={items} />
 
       {/* Submit */}
       <div className="text-right">
