@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { supabase } from "../../lib/supabaseClient";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 
 import ThemeToggle from "../../components/Visuals/ThemeToggle";
 import TransactionList from "../../components/Transactions/TransactionList";
@@ -36,7 +36,7 @@ export default function ProjectDetail() {
     fetchProject();
   }, [projectId]);
 
-  const loadTodos = async () => {
+  const loadTodos = useCallback(async () => {
     const { data, error } = await supabase
       .from("todos")
       .select("*")
@@ -45,11 +45,11 @@ export default function ProjectDetail() {
 
     if (!error) setTodos(data);
     else console.error("Fehler beim Laden der ToDos:", error.message);
-  };
+  }, [projectId]);
 
   useEffect(() => {
     if (projectId) loadTodos();
-  }, [projectId]);
+  }, [projectId, loadTodos]);
 
   const tabs = [
     { key: "overview", label: "Übersicht" },
@@ -116,7 +116,7 @@ export default function ProjectDetail() {
         <div>
           <AddToDo projectId={projectId} onTodoAdded={loadTodos} />
           <Todos projectId={projectId} todos={todos} active={true} onUpdated={loadTodos} />
-          <h3 className="mt-6 text-lg font-semibold text-gray-700 dark:text-gray-300">✅ Erledigt</h3>
+          <br />
           <Todos projectId={projectId} todos={todos} active={false} onUpdated={loadTodos} />
         </div>
       )}

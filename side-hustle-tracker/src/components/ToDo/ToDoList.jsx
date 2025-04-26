@@ -39,6 +39,9 @@ export default function ToDoList({todos, active = true, onUpdated }) {
 
   return (
     <div>
+      <h2 className="text-lg font-semibold mb-4">
+        {active ? "Offene Aufgaben" : "Erledigte Aufgaben"}
+      </h2>
       <ul className="space-y-2">
         {todos
           .filter((t) => t.done !== active)
