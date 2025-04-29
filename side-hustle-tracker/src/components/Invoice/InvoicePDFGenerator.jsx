@@ -63,6 +63,10 @@ const styles = StyleSheet.create({
   column: {
     width: "48%",
   },
+  columnRight: {
+    width: "48%",
+    textAlign: "right",
+  },
 });
 
 // Hauptfunktion
@@ -92,7 +96,7 @@ export async function generateInvoicePDF(invoiceData) {
               <Text style={styles.text}>{`Tel: ${invoiceData.from.phone}`}</Text>
               {invoiceData.from.fax && <Text style={styles.text}>{`Fax: ${invoiceData.from.fax}`}</Text>}
             </View>
-            <View style={styles.column}>
+            <View style={styles.columnRight}>
               <Text style={styles.header}>Empfänger</Text>
               <Text style={styles.text}>{invoiceData.to.name}</Text>
               {invoiceData.to.company && <Text style={styles.text}>{invoiceData.to.company}</Text>}
