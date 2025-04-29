@@ -75,7 +75,6 @@ export default function InvoiceForm({ onGenerate, project_id, teamId }) {
         teamId,
       });
       setSuccess(true);
-      setTimeout(() => window.location.reload(), 2000);
     } else {
       console.error("❌ Kein gültiges onGenerate übergeben!");
     }
