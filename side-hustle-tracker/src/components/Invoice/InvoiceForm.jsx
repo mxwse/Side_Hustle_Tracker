@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { supabase } from "../../lib/supabaseClient";
-import InvoicePreview from "./InvoicePreview"; // Importiere die Vorschau-Komponente
+import InvoicePreview from "./InvoicePreview";
 
 export default function InvoiceForm({ onGenerate, project_id, teamId }) {
   const [form, setForm] = useState({
@@ -14,46 +14,25 @@ export default function InvoiceForm({ onGenerate, project_id, teamId }) {
     tax: 19,
     shipping: 0,
   });
+
   const [items, setItems] = useState([{ qty: 1, description: "", price: 0 }]);
   const [success, setSuccess] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
-  const inputStyle =
-    "w-full p-2 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white";
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (submitting) return;
-    setSubmitting(true);
-    onGenerate({ ...form, items, project_id });
-    setSuccess(true);
-    setTimeout(() => window.location.reload(), 2000);
-  };
-
-  const updateItem = (index, field, value) => {
-    const newItems = [...items];
-    newItems[index][field] = field === "qty" || field === "price" ? Number(value) : value;
-    setItems(newItems);
-  };
-
-  const addItem = () => setItems([...items, { qty: 1, description: "", price: 0 }]);
-  const removeItem = (index) => setItems(items.filter((_, i) => i !== index));
+  const inputStyle = "w-full p-2 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white";
 
   useEffect(() => {
     const fetchCompanyDetails = async () => {
       if (!teamId) return;
-
       const { data, error } = await supabase
         .from("company_details")
         .select("*")
         .eq("team_id", teamId)
         .maybeSingle();
-
       if (error) {
-        console.error("Fehler beim Laden der Absenderdaten:", error.message);
+        console.error("❌ Fehler beim Laden der Absenderdaten:", error.message);
         return;
       }
-
       if (data) {
         setForm((prev) => ({
           ...prev,
@@ -70,13 +49,62 @@ export default function InvoiceForm({ onGenerate, project_id, teamId }) {
     fetchCompanyDetails();
   }, [teamId]);
 
+  const updateItem = (index, field, value) => {
+    const newItems = [...items];
+    newItems[index][field] = field === "qty" || field === "price" ? Number(value) : value;
+    setItems(newItems);
+  };
+
+  const addItem = () => setItems([...items, { qty: 1, description: "", price: 0 }]);
+  const removeItem = (index) => setItems(items.filter((_, i) => i !== index));
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (submitting) return;
+    setSubmitting(true);
+
+    if (typeof onGenerate === "function") {
+      await onGenerate({
+        from: form.from,
+        to: form.to,
+        invoice: form.invoice,
+        tax: form.tax,
+        shipping: form.shipping,
+        items,
+        project_id,
+        teamId,
+      });
+      setSuccess(true);
+      //setTimeout(() => window.location.reload(), 2000);
+    } else {
+      console.error("❌ Kein gültiges onGenerate übergeben!");
+    }
+
+    setSubmitting(false);
+  };
+
   return (
-    <form onSubmit={handleSubmit} className="space-y-1">
+    <form onSubmit={handleSubmit} className="space-y-8">
       {/* Absender */}
       <section className="bg-white dark:bg-gray-800 p-6 rounded shadow">
         <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white">Absender</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {["name", "address", "phone", "fax"].map((field) => (
+        {["name", "address"].map((field) => (
+            <input
+              key={field}
+              type="text"
+              placeholder={field.charAt(0).toUpperCase() + field.slice(1) + "*"}
+              value={form.from[field]}
+              onChange={(e) =>
+                setForm((prev) => ({
+                  ...prev,
+                  from: { ...prev.from, [field]: e.target.value },
+                }))
+              }
+              className={inputStyle}
+            />
+          ))}
+          {["phone", "fax"].map((field) => (
             <input
               key={field}
               type="text"
@@ -98,7 +126,22 @@ export default function InvoiceForm({ onGenerate, project_id, teamId }) {
       <section className="bg-white dark:bg-gray-800 p-6 rounded shadow">
         <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white">Empfänger</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {["name", "company", "address", "phone"].map((field) => (
+          {["name", "address"].map((field) => (
+            <input
+              key={field}
+              type="text"
+              placeholder={field.charAt(0).toUpperCase() + field.slice(1) + "*"}
+              value={form.to[field]}
+              onChange={(e) =>
+                setForm((prev) => ({
+                  ...prev,
+                  to: { ...prev.to, [field]: e.target.value },
+                }))
+              }
+              className={inputStyle}
+            />
+          ))}
+          {["company", "phone"].map((field) => (
             <input
               key={field}
               type="text"
@@ -121,6 +164,7 @@ export default function InvoiceForm({ onGenerate, project_id, teamId }) {
         <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white">Rechnung</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <input
+            type="text"
             placeholder="Rechnungsnummer"
             className={inputStyle}
             value={form.invoice.number}
@@ -202,35 +246,27 @@ export default function InvoiceForm({ onGenerate, project_id, teamId }) {
         <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white">Zusatzkosten</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-              MwSt. (%)
-            </label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">MwSt. (%)</label>
             <input
               type="number"
               className={inputStyle}
               value={form.tax}
-              onChange={(e) =>
-                setForm((prev) => ({ ...prev, tax: Number(e.target.value) }))
-              }
+              onChange={(e) => setForm((prev) => ({ ...prev, tax: Number(e.target.value) }))}
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-              Versand (€)
-            </label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Versand (€)</label>
             <input
               type="number"
               className={inputStyle}
               value={form.shipping}
-              onChange={(e) =>
-                setForm((prev) => ({ ...prev, shipping: Number(e.target.value) }))
-              }
+              onChange={(e) => setForm((prev) => ({ ...prev, shipping: Number(e.target.value) }))}
             />
           </div>
         </div>
       </section>
-
-      {/* Vorschau anzeigen */}
+      <p className="text-xs font-light">Alle mit "*" markierten Felder, sind Pflichtfelder</p>
+      {/* Vorschau */}
       <InvoicePreview form={form} items={items} />
 
       {/* Submit */}
@@ -240,13 +276,10 @@ export default function InvoiceForm({ onGenerate, project_id, teamId }) {
           disabled={submitting}
           className="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-3 rounded shadow disabled:opacity-50"
         >
-          Rechnung erstellen
+          📄 Rechnung erstellen
         </button>
-
         {success && (
-          <p className="text-green-600 text-sm mt-2 animate-fade-in">
-            ✅ Rechnung erfolgreich erstellt!
-          </p>
+          <p className="text-green-500 mt-4">Rechnung erfolgreich erstellt!</p>
         )}
       </div>
     </form>

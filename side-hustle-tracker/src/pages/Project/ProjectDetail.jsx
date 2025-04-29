@@ -1,7 +1,6 @@
 import { useParams } from "react-router-dom";
 import { supabase } from "../../lib/supabaseClient";
 import { useEffect, useState, useCallback } from "react";
-
 import ThemeToggle from "../../components/Visuals/ThemeToggle";
 import TransactionList from "../../components/Transactions/TransactionList";
 import CommentList from "../../components/Comment/CommentList";
@@ -13,8 +12,9 @@ import ProjectDetails from "../../components/Project/ProjectDetails";
 import Todos from "../../components/ToDo/ToDoList";
 import InvoiceList from "../../components/Invoice/InvoiceList";
 import InvoiceForm from "../../components/Invoice/InvoiceForm";
-import { generatePDF } from "../../components/Invoice/InvoicePDFGenerator";
 import AddToDo from "../../components/AddTableRow/AddToDo";
+import { generateInvoicePDF } from "../../components/Invoice/InvoicePDFGenerator";
+
 
 export default function ProjectDetail() {
   const { id: projectId } = useParams();
@@ -129,7 +129,11 @@ export default function ProjectDetail() {
 
       {selectedTab === "invoices" && (
         <div>
-          <InvoiceForm project_id={projectId} onGenerate={generatePDF} teamId={project.team_id} />
+          <InvoiceForm
+            project_id={projectId}
+            teamId={project.team_id}
+            onGenerate={generateInvoicePDF}
+          />
           <br />
           <InvoiceList projectId={projectId} />
         </div>

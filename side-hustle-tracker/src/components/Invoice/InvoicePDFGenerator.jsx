@@ -1,194 +1,182 @@
-import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
-import { saveAs } from "file-saver";
+import { Document, Page, Text, View, StyleSheet, pdf } from "@react-pdf/renderer";
 import { supabase } from "../../lib/supabaseClient";
-
 import getNextInvoiceNumber from "./GenerateInvoiceNumber";
 
-export async function generatePDF(data) {
-  console.log("📤 Empfangenes Datenpaket:", data);
-  const user = (await supabase.auth.getUser()).data.user;
-  const pdfDoc = await PDFDocument.create();
-  const page = pdfDoc.addPage([595, 842]);
-  const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
-  const { width, height } = page.getSize();
-  const net = data.items.reduce((sum, item) => sum + item.qty * item.price, 0);
-  const taxAmount = (net * data.tax) / 100;
-  const total = net + taxAmount + data.shipping;
-  const rightMargin = 50;
-  const rightYStart = height - 60;
-  let rightY = rightYStart;
-  let y = height - 60;
-  const invoiceNumber = await getNextInvoiceNumber();
-  
-  const drawText = (text, x = 50, yOverride = null, size = 12) => {
-    page.drawText(text, {
-      x,
-      y: yOverride !== null ? yOverride : y,
-      size,
-      font,
-      color: rgb(0, 0, 0),
-    });
-    if (yOverride === null) y -= size + 4;
-  };
+const styles = StyleSheet.create({
+  page: {
+    padding: 30,
+    fontFamily: "Helvetica",
+  },
+  title: {
+    fontSize: 24,
+    textAlign: "center",
+    marginBottom: 30,
+    fontWeight: "bold",
+  },
+  section: {
+    marginBottom: 10,
+  },
+  header: {
+    fontSize: 14,
+    fontWeight: "bold",
+    marginBottom: 5,
+  },
+  text: {
+    fontSize: 12,
+    marginBottom: 5,
+  },
+  table: {
+    width: "100%",
+    borderStyle: "solid",
+    borderWidth: 1,
+    borderColor: "#e0e0e0",
+    marginBottom: 20,
+    marginTop: 20,
+  },
+  tableRow: {
+    flexDirection: "row",
+    borderBottomWidth: 1,
+    borderBottomColor: "#e0e0e0",
+    paddingVertical: 8,
+    paddingHorizontal: 5,
+  },
+  tableCell: {
+    width: "25%",
+    textAlign: "center",
+    fontSize: 12,
+  },
+  total: {
+    fontSize: 14,
+    marginTop: 10,
+    fontWeight: "bold",
+  },
+  totalText: {
+    textAlign: "right",
+  },
+  alignRight: {
+    textAlign: "right",
+  },
+  flexRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  column: {
+    width: "48%",
+  },
+});
 
-  // 🎯 Header
-  page.drawText("RECHNUNG", {
-    x: width / 2 - font.widthOfTextAtSize("RECHNUNG", 18) / 2,
-    y,
-    size: 18,
-    font,
-    color: rgb(0, 0, 0),
-  });
-  y -= 40;
-
-  // 🧾 Absender (links oben)
-  drawText(data.from.name, 50);
-  drawText(data.from.address);
-  drawText(`Tel: ${data.from.phone}`);
-  if (data.from.fax) drawText(`Fax: ${data.from.fax}`);
-
-  // 👤 Empfänger (rechts oben)
-  const drawRightAligned = (text, yValue, size = 10) => {
-    const textWidth = font.widthOfTextAtSize(text, size);
-    const x = width - rightMargin - textWidth;
-    page.drawText(text, { x, y: yValue, size, font });
-  };
-  
-  drawRightAligned("Empfänger:", rightY, 12);
-  rightY -= 16;
-  
-  drawRightAligned(data.to.name, rightY);
-  rightY -= 14;
-  
-  if (data.to.company) {
-    drawRightAligned(data.to.company, rightY);
-    rightY -= 14;
-  }
-  
-  drawRightAligned(data.to.address, rightY);
-  rightY -= 14;
-  
-  if (data.to.phone) {
-    drawRightAligned(`Tel: ${data.to.phone}`, rightY);
-    rightY -= 14;
-  }
-  y -= 20;
-
-  // 📄 Rechnungsdaten
-  drawText(`Rechnungsnummer: ${invoiceNumber}`);
-  drawText(`Datum: ${data.invoice.date}`);
-  if (data.invoice.comment) drawText(`Hinweis: ${data.invoice.comment}`);
-
-  y -= 20;
-
-  // 🧾 Positionsüberschrift
-  const colX = [50, 90, 320, 460]; // Menge, Bezeichnung, Einzelpreis, Gesamt
-  page.drawText("Menge", { x: colX[0], y, size: 10, font });
-  page.drawText("Beschreibung", { x: colX[1], y, size: 10, font });
-  page.drawText("Einzelpreis", { x: colX[2], y, size: 10, font });
-  page.drawText("Gesamt", { x: colX[3], y, size: 10, font });
-  y -= 10;
-
-  page.drawLine({
-    start: { x: 50, y },
-    end: { x: width - 50, y },
-    thickness: 0.5,
-    color: rgb(0.75, 0.75, 0.75),
-  });
-  y -= 14;
-
-  // 📦 Positionen
-  data.items.forEach((item) => {
-    const lineTotal = item.qty * item.price;
-    page.drawText(`${item.qty}`, { x: colX[0], y, size: 10, font });
-    page.drawText(item.description, { x: colX[1], y, size: 10, font });
-    page.drawText(`${item.price.toFixed(2)} €`, { x: colX[2], y, size: 10, font });
-    page.drawText(`${lineTotal.toFixed(2)} €`, { x: colX[3], y, size: 10, font });
-    y -= 16;
-  });
-
-  y -= 10;
-
-  const drawTotalLine = (label, amount) => {
-    page.drawText(label, { x: colX[2], y, size: 10, font });
-    page.drawText(`${amount.toFixed(2)} €`, { x: colX[3], y, size: 10, font });
-    y -= 14;
-  };
-
-  drawTotalLine("Zwischensumme", net);
-  drawTotalLine(`MwSt. (${data.tax}%)`, taxAmount);
-  drawTotalLine("Versand", data.shipping);
-
-  y -= 6;
-
-  // 🟩 Gesamtbetrag hervorheben
-  page.drawRectangle({
-    x: colX[2],
-    y: y - 4,
-    width: 130,
-    height: 18,
-    color: rgb(0.95, 0.95, 0.95),
-  });
-
-  page.drawText("Gesamtbetrag", {
-    x: colX[2] + 5,
-    y,
-    size: 10,
-    font,
-    color: rgb(0, 0, 0),
-  });
-  page.drawText(`${total.toFixed(2)} €`, {
-    x: colX[3],
-    y,
-    size: 12,
-    font,
-    color: rgb(0, 0, 0),
-  });
-
-  // [draw invoice content as before...]
-
-  drawText(`Gesamtbetrag: ${total.toFixed(2)} €`, 50, 14);
-
-  // 🧾 PDF speichern
-  const pdfBytes = await pdfDoc.save();
-  const filename = `invoice_${data.invoice.number || Date.now()}.pdf`;
-
-  // 📁 In Supabase hochladen
-  const { error: uploadError } = await supabase.storage
-    .from("invoices")
-    .upload(filename, pdfBytes, {
-      contentType: "application/pdf",
-      upsert: false,
-    });
-
-  if (uploadError) {
-    console.error("❌ Fehler beim Upload:", uploadError.message);
+// Hauptfunktion
+export async function generateInvoicePDF(invoiceData) {
+  if (!invoiceData?.from?.name || !invoiceData?.from?.address || !invoiceData?.to?.name || !invoiceData?.to?.address || !Array.isArray(invoiceData?.items)) {
+    alert("Bitte fülle alle erforderlichen Felder aus.");
     return;
   }
 
-  // 🔗 Download-URL erzeugen
-  const { data: fileData } = supabase.storage
-    .from("invoices")
-    .getPublicUrl(filename);
+  try {
+    const net = invoiceData.items.reduce((sum, item) => sum + item.qty * item.price, 0);
+    const taxAmount = (net * invoiceData.tax) / 100;
+    const total = net + taxAmount + invoiceData.shipping;
+    const InvoiceNumber = await getNextInvoiceNumber();
 
-    const fileUrl = fileData?.publicUrl;
+    const doc = (
+      <Document>
+        <Page style={styles.page}>
+          <Text style={styles.title}>Rechnung</Text>
+    
+          {/* Absender und Empfänger in zwei Spalten */}
+          <View style={styles.flexRow}>
+            <View style={styles.column}>
+              <Text style={styles.header}>Absender</Text>
+              <Text style={styles.text}>{invoiceData.from.name}</Text>
+              <Text style={styles.text}>{invoiceData.from.address}</Text>
+              <Text style={styles.text}>{`Tel: ${invoiceData.from.phone}`}</Text>
+              {invoiceData.from.fax && <Text style={styles.text}>{`Fax: ${invoiceData.from.fax}`}</Text>}
+            </View>
+            <View style={styles.column}>
+              <Text style={styles.header}>Empfänger</Text>
+              <Text style={styles.text}>{invoiceData.to.name}</Text>
+              {invoiceData.to.company && <Text style={styles.text}>{invoiceData.to.company}</Text>}
+              <Text style={styles.text}>{invoiceData.to.address}</Text>
+              {invoiceData.to.phone && <Text style={styles.text}>{`Tel: ${invoiceData.to.phone}`}</Text>}
+            </View>
+          </View>
+    
+          {/* Rechnungsdetails */}
+          <View style={styles.section}>
+            <Text style={styles.header}>Rechnungsnummer: {InvoiceNumber}</Text>
+            <Text style={styles.text}>Datum: {invoiceData.invoice.date}</Text>
+            {invoiceData.invoice.comment && (
+              <Text style={styles.text}>Kommentar: {invoiceData.invoice.comment}</Text>
+            )}
+          </View>
+    
+          {/* Tabelle mit Positionen */}
+          <View style={styles.table}>
+            <View style={styles.tableRow}>
+              <Text style={styles.tableCell}>Menge</Text>
+              <Text style={styles.tableCell}>Beschreibung</Text>
+              <Text style={styles.tableCell}>Einzelpreis</Text>
+              <Text style={styles.tableCell}>Gesamt</Text>
+            </View>
+            {invoiceData.items.map((item, index) => (
+              <View style={styles.tableRow} key={index}>
+                <Text style={styles.tableCell}>{item.qty}</Text>
+                <Text style={styles.tableCell}>{item.description}</Text>
+                <Text style={styles.tableCell}>{item.price.toFixed(2)} €</Text>
+                <Text style={styles.tableCell}>{(item.qty * item.price).toFixed(2)} €</Text>
+              </View>
+            ))}
+          </View>
+    
+          {/* Zusammenfassung */}
+          <View style={styles.section}>
+            <View style={styles.flexRow}>
+              <Text style={styles.total}>Zwischensumme:</Text>
+              <Text style={[styles.total, styles.alignRight]}>{net.toFixed(2)} €</Text>
+            </View>
+            <View style={styles.flexRow}>
+              <Text style={styles.total}>MwSt. ({invoiceData.tax}%):</Text>
+              <Text style={[styles.total, styles.alignRight]}>{taxAmount.toFixed(2)} €</Text>
+            </View>
+            <View style={styles.flexRow}>
+              <Text style={styles.total}>Versand:</Text>
+              <Text style={[styles.total, styles.alignRight]}>{invoiceData.shipping.toFixed(2)} €</Text>
+            </View>
+            <View style={styles.flexRow}>
+              <Text style={styles.total}>Gesamtbetrag:</Text>
+              <Text style={[styles.total, styles.alignRight]}>{total.toFixed(2)} €</Text>
+            </View>
+          </View>
+        </Page>
+      </Document>
+    );
 
-  // 📄 Eintrag in Rechnungstabelle
-  const { error: insertError } = await supabase.from("invoices").insert({
-    invoice_number: invoiceNumber,
-    file_url: fileUrl,
-    user_id: user.id,
-    entries: data.items,
-    total : total,
-    project_id: data.project_id,
-  });
+    // ➡️ Generiere Blob
+    const blob = await pdf(doc).toBlob();
 
-  if (insertError) {
-    console.error("❌ Fehler beim Speichern in DB:", insertError.message);
-    return;
+    // ➡️ Lokaler Download
+    const downloadLink = document.createElement("a");
+    downloadLink.href = URL.createObjectURL(blob);
+    downloadLink.download = `Rechnung_${InvoiceNumber}.pdf`;
+    downloadLink.click();
+
+    // ➡️ Upload zu Supabase
+    const fileName = `invoices/Rechnung_${InvoiceNumber}_${Date.now()}.pdf`;
+
+    const { error: uploadError } = await supabase.storage
+      .from("invoices")
+      .upload(fileName, blob, {
+        cacheControl: "3600",
+        upsert: true,
+        contentType: "application/pdf",
+      });
+
+    if (uploadError) {
+      console.error("❌ Fehler beim Upload zu Supabase:", uploadError.message);
+    } else {
+      console.log("✅ PDF erfolgreich hochgeladen:", fileName);
+    }
+  } catch (err) {
+    console.error("❌ Fehler beim Generieren der PDF:", err.message);
   }
-
-  // 💾 Optional lokal speichern
-  const blob = new Blob([pdfBytes], { type: "application/pdf" });
-  saveAs(blob, filename);
 }
